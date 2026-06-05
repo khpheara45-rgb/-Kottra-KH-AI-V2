@@ -1,1527 +1,1171 @@
 <!DOCTYPE html>
-<html lang="km" class="scroll-smooth">
+<html lang="km">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>កត់ត្រា AI KH (KOTTRA AI KH) - ប្រព័ន្ធបម្លែងសំឡេង និងសង្ខេបរបាយការណ៍ឥតគិតថ្លៃ</title>
-    <!-- Tailwind CSS CDN -->
+    <title>ខ្មែរកត់ត្រា Kottra ​KH AI - ប្រព័ន្ធកត់ត្រាសំឡេង និងបង្កើតរបាយការណ៍</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for Khmer & Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Preahvihear&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Kantumruy Pro', 'Inter', 'sans-serif'],
-                        header: ['Preahvihear', 'sans-serif']
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f4f3ff',
-                            100: '#ebe9fe',
-                            500: '#6366f1',
-                            600: '#4f46e5',
-                            700: '#4338ca',
-                            900: '#312e81',
-                            dark: '#0b0a1a',
-                            card: '#13112b'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
-            background-color: #0b0a1a;
-            color: #f1f5f9;
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
         }
-        .gradient-text {
-            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #4f46e5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gradient-border {
-            border-image: linear-gradient(to right, #6366f1, #a5b4fc) 1;
-        }
-        /* Custom Scrollbar */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #13112b;
+            background: #0f172a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #312e81;
-            border-radius: 4px;
+            background: #334155;
+            border-radius: 3px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #4f46e5;
+            background: #475569;
+        }
+        /* Pulse Animation */
+        @keyframes pulse-custom {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        .animate-pulse-custom {
+            animation: pulse-custom 2s infinite ease-in-out;
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Navigation Bar -->
-    <nav class="fixed top-0 left-0 w-full z-50 bg-brand-dark/85 backdrop-blur-md border-b border-white/5 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
-                    <div class="w-10 h-10 bg-gradient-to-tr from-brand-600 to-indigo-400 rounded-xl flex items-center justify-center shadow-lg shadow-brand-600/30">
-                        <i class="fa-solid fa-microphone-lines text-white text-lg"></i>
-                    </div>
-                    <div>
-                        <span class="font-header text-xl tracking-wider text-white">កត់ត្រា <span class="text-brand-500">AI KH</span></span>
-                        <div class="text-[9px] text-gray-400 tracking-widest -mt-1 uppercase">KOTTRA</div>
-                    </div>
+    <!-- Header / Navigation -->
+    <header class="border-b border-gray-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-gradient-to-tr from-cyan-500 to-blue-600 rounded-xl text-white shadow-lg shadow-cyan-500/20">
+                    <i data-lucide="mic" class="w-6 h-6"></i>
                 </div>
-                
-                <!-- Desktop Nav Links -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#features" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">លក្ខណៈពិសេស</a>
-                    <a href="#how-it-works" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">របៀបប្រើប្រាស់</a>
-                    <a href="#security" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">សុវត្ថិភាព</a>
-                    <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">កញ្ចប់សេវា (Free)</a>
-                </div>
-
-                <!-- Action Button -->
-                <div class="flex items-center gap-3">
-                    <span class="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        ឥតគិតថ្លៃជានិច្ច
-                    </span>
-                    <button onclick="navigateTo('workspace')" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition-all duration-200 transform hover:scale-[1.02] shadow-lg shadow-brand-600/20 flex items-center gap-2">
-                        <i class="fa-solid fa-bolt"></i> ចូលទៅកន្លែងធ្វើការ
-                    </button>
+                <div>
+                    <h1 class="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">ខ្មែរកត់ត្រា KOTTRA KH AI</h1>
+                    <p class="text-[10px] text-gray-400 tracking-wider">PREMIUM TRANSCRIBER</p>
                 </div>
             </div>
-        </div>
-    </nav>
-
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="pt-20">
-
-        <!-- HOME PAGE / LANDING PAGE -->
-        <section id="home-page" class="transition-all duration-500">
             
-            <!-- Hero Section -->
-            <div class="relative overflow-hidden pt-12 pb-24 lg:pt-20 lg:pb-32">
-                <!-- Background Glow Elements -->
-                <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-600/10 rounded-full blur-[120px] pointer-events-none"></div>
-                <div class="absolute top-1/3 left-1/3 w-[300px] h-[300px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+            <nav class="hidden md:flex items-center gap-6 text-sm text-gray-300">
+                <a href="#features" class="hover:text-cyan-400 transition">មុខងារពិសេស</a>
+                <a href="#how-it-works" class="hover:text-cyan-400 transition">របៀបប្រើប្រាស់</a>
+                <a href="#tool" class="px-4 py-2 bg-cyan-500/10 text-cyan-400 rounded-lg border border-cyan-500/20 hover:bg-cyan-500/20 transition">សាកល្បងឥតគិតថ្លៃ</a>
+            </nav>
+        </div>
+    </header>
 
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="text-center max-w-4xl mx-auto">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs sm:text-sm font-medium mb-8 animate-bounce">
-                            <i class="fa-solid fa-sparkles text-amber-400"></i>
-                            ប្រព័ន្ធជំនួយការកត់ត្រាឆ្លាតវៃភាសាខ្មែរ Free 100%
-                        </div>
-                        
-                        <h1 class="font-header text-3xl sm:text-4xl md:text-6xl text-white leading-tight sm:leading-snug md:leading-normal mb-6">
-                            បម្លែងរាល់ការនិយាយទៅជា <br class="hidden sm:block">
-                            <span class="gradient-text">អត្ថបទ និងរបាយការណ៍ប្រជុំ</span> ដ៏ត្រឹមត្រូវបំផុត
-                        </h1>
-                        
-                        <p class="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
-                            កត់ត្រា AI KH ជួយអ្នកកត់ត្រាការប្រជុំ បកប្រែភាសា និងបង្កើតកំណត់ហេតុប្រជុំដោយស្វ័យប្រវត្តិ។ គាំទ្រការនិយាយលាយភាសាខ្មែរ និងអង់គ្លេស (Code-Switching) យ៉ាងរលូនល្អបំផុត។
-                        </p>
-
-                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                            <button onclick="navigateTo('workspace')" class="w-full sm:w-auto bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white px-8 py-4 rounded-xl font-semibold text-base transition-all duration-200 transform hover:scale-[1.02] shadow-xl shadow-brand-600/20 flex items-center justify-center gap-3">
-                                <i class="fa-solid fa-play"></i> ចាប់ផ្ដើមប្រើប្រាស់ឥឡូវនេះ
-                            </button>
-                            <a href="#features" class="w-full sm:w-auto bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/10 px-8 py-4 rounded-xl font-medium text-base transition-all flex items-center justify-center gap-2">
-                                សិក្សាបន្ថែម <i class="fa-solid fa-arrow-down text-xs"></i>
-                            </a>
-                        </div>
-
-                        <!-- Mini Stats -->
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto border-t border-white/5 pt-10">
-                            <div class="p-4 rounded-2xl bg-brand-card/30 border border-white/5">
-                                <div class="text-2xl sm:text-3xl font-bold text-white mb-1">98.5%</div>
-                                <div class="text-xs text-gray-400">ភាពត្រឹមត្រូវអក្សរខ្មែរ</div>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-brand-card/30 border border-white/5">
-                                <div class="text-2xl sm:text-3xl font-bold text-white mb-1">&lt; 2 នាទី</div>
-                                <div class="text-xs text-gray-400">ដំណើរការវិភាគរហ័ស</div>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-brand-card/30 border border-white/5">
-                                <div class="text-2xl sm:text-3xl font-bold text-white mb-1">100%</div>
-                                <div class="text-xs text-gray-400">ឥតគិតថ្លៃសេរី</div>
-                            </div>
-                            <div class="p-4 rounded-2xl bg-brand-card/30 border border-white/5">
-                                <div class="text-2xl sm:text-3xl font-bold text-indigo-400 mb-1">Zero</div>
-                                <div class="text-xs text-gray-400">ការរក្សាទុកឯកសារសម្ងាត់</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Features Grid Section -->
-            <section id="features" class="py-24 bg-brand-card/20 border-y border-white/5 relative">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center max-w-3xl mx-auto mb-16">
-                        <h2 class="font-header text-2xl sm:text-3xl text-white mb-4">មុខងារស្នូលរបស់ប្រព័ន្ធ កត់ត្រា AI KH</h2>
-                        <p class="text-gray-400 text-sm sm:text-base">បច្ចេកវិទ្យាបញ្ញាសិប្បនិម្មិតខ្មែរដំបូងគេបង្អស់ ដែលត្រូវបានរចនាឡើងដើម្បីបង្កើនប្រសិទ្ធភាពការងារការិយាល័យ និងការសិក្សា។</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <!-- Card 1 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400 mb-6 group-hover:bg-brand-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-microphone-lines text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">បម្លែងសំឡេងទៅជាអក្សរ (STT)</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                បម្លែងរាល់ការនិយាយ ឯកសារសំឡេងប្រជុំ បទសម្ភាសន៍ ឬវីដេអូទៅជាអត្ថបទភាសាខ្មែរបានយ៉ាងត្រឹមត្រូវ និងរហ័សទាន់ចិត្ត។
-                            </p>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-6 group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-users text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">កំណត់អត្តសញ្ញាណអ្នកនិយាយ</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                ប្រព័ន្ធឆ្លាតវៃអាចបែងចែករវាងអ្នកនិយាយផ្សេងៗគ្នាដោយស្វ័យប្រវត្តិ (Speaker 1, Speaker 2...) រួមទាំងការភ្ជាប់ត្រាពេលវេលា (Timestamps)។
-                            </p>
-                        </div>
-
-                        <!-- Card 3 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-6 group-hover:bg-purple-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-file-invoice text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">សង្ខេបរបាយការណ៍ និងការងារ</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                ជំនួយការ AI នឹងវិភាគខ្លឹមសាររួមទាំងមូល រួចទាញយកចំណុចគន្លឹះ កិច្ចការដែលត្រូវធ្វើបន្ត និងសេចក្តីសម្រេចចិត្តបានភ្លាមៗ។
-                            </p>
-                        </div>
-
-                        <!-- Card 4 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-pink-500/10 flex items-center justify-center text-pink-400 mb-6 group-hover:bg-pink-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-language text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">បកប្រែភាសា និងកែកំហុស</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                កែសម្រួលពាក្យសម្តីរអាក់រអួល ស្ទួនៗ ឬដកឃ្លាខុសឱ្យទៅជាប្រយោគដ៏រលូន និងអាចបកប្រែជាភាសាផ្សេងៗទៀតភ្លាមៗ។
-                            </p>
-                        </div>
-
-                        <!-- Card 5 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-shield-halved text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">Zero Retention - សុវត្ថិភាពខ្ពស់</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                សំឡេង និងអត្ថបទលទ្ធផលទាំងអស់នឹងត្រូវលុបចោលពីប្រព័ន្ធដោយស្វ័យប្រវត្តភ្លាមៗ ក្រោយពេលដំណើរការរួច ដោយធានាការសម្ងាត់១០០%។
-                            </p>
-                        </div>
-
-                        <!-- Card 6 -->
-                        <div class="p-8 rounded-3xl bg-brand-card border border-white/5 hover:border-brand-500/30 transition-all duration-300 group hover:-translate-y-1">
-                            <div class="w-12 h-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-400 mb-6 group-hover:bg-amber-500 group-hover:text-white transition-all duration-300">
-                                <i class="fa-solid fa-file-word text-xl"></i>
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-3">ទាញយកឯកសារច្រើនទម្រង់</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">
-                                អ្នកអាចទាញយកលទ្ធផលដែលចងក្រងរួចជាឯកសារ Microsoft Word (.docx), PDF, អត្ថបទធម្មតា (.txt) ឬឯកសាររត់អក្សរវីដេអូ (.srt)។
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- How It Works Section -->
-            <section id="how-it-works" class="py-24 relative">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center max-w-3xl mx-auto mb-16">
-                        <h2 class="font-header text-2xl sm:text-3xl text-white mb-4">ដំណើរការការងារសាមញ្ញ ៣ ជំហាន</h2>
-                        <p class="text-gray-400 text-sm sm:text-base">ចំណេញពេលវេលារបស់អ្នកពីការស្តាប់ និងកត់ត្រារាប់ម៉ោង មកនៅត្រឹមតែប៉ុន្មាននាទីប៉ុណ្ណោះ។</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-                        <!-- Connection Line (Desktop) -->
-                        <div class="hidden md:block absolute top-1/2 left-[15%] right-[15%] h-[2px] bg-gradient-to-r from-brand-600/30 via-indigo-500/40 to-brand-600/30 -translate-y-12 z-0"></div>
-
-                        <!-- Step 1 -->
-                        <div class="relative z-10 text-center flex flex-col items-center">
-                            <div class="w-20 h-20 rounded-full bg-brand-dark border-2 border-brand-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-brand-500/20 mb-6">
-                                ០១
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-2">បញ្ចូលសំឡេង ឬ ថតផ្ទាល់</h3>
-                            <p class="text-gray-400 text-xs sm:text-sm max-w-xs leading-relaxed">
-                                ថតសំឡេងការិយាល័យផ្ទាល់តាមមីក្រូហ្វូន ឬបញ្ចូលឯកសារសំឡេងដែលមានស្រាប់ (MP3, WAV, MP4, M4A)។
-                            </p>
-                        </div>
-
-                        <!-- Step 2 -->
-                        <div class="relative z-10 text-center flex flex-col items-center">
-                            <div class="w-20 h-20 rounded-full bg-brand-dark border-2 border-indigo-400 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-400/20 mb-6">
-                                ០២
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-2">ការវិភាគដោយម៉ាស៊ីន AI</h3>
-                            <p class="text-gray-400 text-xs sm:text-sm max-w-xs leading-relaxed">
-                                ប្រព័ន្ធនឹងដំណើរការបំលែងសំឡេងជាអក្សរ កំណត់សម្គាល់អ្នកនិយាយ និងសង្ខេបចំណុចសំខាន់ៗដោយស្វ័យប្រវត្ត។
-                            </p>
-                        </div>
-
-                        <!-- Step 3 -->
-                        <div class="relative z-10 text-center flex flex-col items-center">
-                            <div class="w-20 h-20 rounded-full bg-brand-dark border-2 border-purple-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-purple-500/20 mb-6">
-                                ០៣
-                            </div>
-                            <h3 class="text-lg font-semibold text-white mb-2">ផ្ទៀងផ្ទាត់ និង ទាញយក</h3>
-                            <p class="text-gray-400 text-xs sm:text-sm max-w-xs leading-relaxed">
-                                ពិនិត្យកែសម្រួលអត្ថបទដែលបានបំប្លែង រួចទាញយកជាឯកសារ Word ឬ PDF ឬកំណត់ហេតុប្រជុំយ៉ាងមានរបៀបរៀបរយ។
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Security & Zero Retention Section -->
-            <section id="security" class="py-24 bg-brand-card/10 border-t border-white/5 relative">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="bg-gradient-to-r from-brand-card/80 to-indigo-950/40 p-8 sm:p-16 rounded-[2.5rem] border border-white/5 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden">
-                        <div class="absolute -right-24 -bottom-24 w-80 h-80 bg-brand-500/5 rounded-full blur-3xl pointer-events-none"></div>
-                        
-                        <div class="max-w-2xl">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-6">
-                                <i class="fa-solid fa-lock-keyhole"></i> គោលការណ៍រក្សាការសម្ងាត់ខ្ពស់បំផុត
-                            </div>
-                            <h2 class="font-header text-2xl sm:text-3xl text-white mb-6 leading-snug">
-                                សុវត្ថិភាពទិន្នន័យរបស់អ្នក <br class="hidden sm:block">គឺជាអាទិភាពចម្បងរបស់យើង
-                            </h2>
-                            <p class="text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
-                                ដោយសារអ្នកប្រើប្រាស់ភាគច្រើនជាស្ថាប័នរដ្ឋ និងអ្នកមានការប្រជុំសំខាន់ៗដែលត្រូវការការការពារទិន្នន័យសម្ងាត់ ប្រព័ន្ធកត់ត្រា AI KH របស់យើងត្រូវបានបំពាក់នូវគោលការណ៍ <strong class="text-white">"Zero Retention Policy"</strong> ។
-                            </p>
-                            <ul class="space-y-4 text-sm text-gray-300">
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                                    លុបទិន្នន័យចោលដោយស្វ័យប្រវត្តទាំងសំឡេងដើម និងអត្ថបទលទ្ធផលភ្លាមៗក្រោយការបំលែង។
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                                    ការបម្លែងកូដទិន្នន័យក្នុងពេលឆ្លងកាត់ និងបញ្ជូន (End-to-End Encryption)។
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                                    អ្នកមានសិទ្ធិពេញលេញក្នុងការសម្រេចចិត្តរក្សាទុក ឬលុបចេញភ្លាមៗ។
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="w-full lg:w-80 flex flex-col items-center justify-center">
-                            <div class="relative">
-                                <div class="w-48 h-48 rounded-full bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center animate-pulse">
-                                    <i class="fa-solid fa-shield-halved text-7xl text-indigo-400"></i>
-                                </div>
-                                <div class="absolute -top-2 -right-2 w-12 h-12 bg-emerald-500/20 border border-emerald-500 text-emerald-400 rounded-full flex items-center justify-center text-lg shadow-lg">
-                                    <i class="fa-solid fa-check-double"></i>
-                                </div>
-                            </div>
-                            <div class="text-center mt-6">
-                                <span class="text-sm font-semibold text-white tracking-wide">SECURE TRANSCRIPTION</span>
-                                <p class="text-xs text-gray-400 mt-1">100% Private Offline Processing Option</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Pricing / Free Access Plan Section -->
-            <section id="pricing" class="py-24 relative overflow-hidden">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center max-w-3xl mx-auto mb-16">
-                        <span class="text-xs font-semibold uppercase tracking-widest text-brand-400">កញ្ចប់សេវាកម្ម</span>
-                        <h2 class="font-header text-2xl sm:text-3xl text-white mt-2 mb-4">ប្រើប្រាស់ដោយសេរី ដោយគ្មានដែនកំណត់</h2>
-                        <p class="text-gray-400 text-sm sm:text-base">យើងជឿជាក់លើការជួយសម្រួលដល់ការងារប្រជាជនកម្ពុជា ដូច្នេះរាល់មុខងារទាំងអស់ត្រូវបានបើកឱ្យប្រើប្រាស់ដោយសេរី ឥតគិតថ្លៃជានិច្ច។</p>
-                    </div>
-
-                    <div class="max-w-md mx-auto relative">
-                        <!-- Glow effect -->
-                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-600 to-indigo-600 rounded-[2rem] blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
-                        
-                        <div class="relative bg-brand-card rounded-3xl p-8 sm:p-10 border border-brand-500/30 shadow-2xl">
-                            <div class="absolute top-5 right-5 bg-gradient-to-r from-brand-600 to-indigo-600 text-white text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full">
-                                FREE FOR EVERYONE
-                            </div>
-                            
-                            <h3 class="text-lg font-bold text-white mb-2">កញ្ចប់សេរីជានិច្ច (Free Forever)</h3>
-                            <p class="text-gray-400 text-xs leading-relaxed mb-6">ល្អបំផុតសម្រាប់បុគ្គលិកការិយាល័យ និស្សិត សាស្ត្រាចារ្យ អ្នកសារព័ត៌មាន និងស្ថាប័នទូទៅ។</p>
-                            
-                            <div class="flex items-baseline gap-2 mb-8">
-                                <span class="text-5xl font-extrabold text-white tracking-tight">$0</span>
-                                <span class="text-gray-400 text-sm">/ ជានិច្ចកាល</span>
-                            </div>
-
-                            <button onclick="navigateTo('workspace')" class="w-full bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold py-3.5 px-6 rounded-2xl shadow-lg shadow-brand-500/20 transition duration-200 transform hover:scale-[1.02] flex items-center justify-center gap-2 mb-8">
-                                <i class="fa-solid fa-arrow-right"></i> ចាប់ផ្ដើមប្រើប្រាស់ដោយសេរី
-                            </button>
-
-                            <ul class="space-y-4 text-sm text-gray-300">
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-indigo-400"></i>
-                                    បម្លែងសំឡេងបានគ្មានដែនកំណត់នាទី
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-indigo-400"></i>
-                                    មុខងារបែងចែកអ្នកនិយាយ (Speaker ID)
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-indigo-400"></i>
-                                    ជំនួយការ AI សង្ខេបរបាយការណ៍ និងការងារ
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-indigo-400"></i>
-                                    បកប្រែជាភាសាអង់គ្លេស និងភាសាផ្សេងទៀត
-                                </li>
-                                <li class="flex items-center gap-3">
-                                    <i class="fa-solid fa-circle-check text-indigo-400"></i>
-                                    ទាញយកឯកសារ Word, PDF និង SRT
-                                </li>
-                                <li class="flex items-center gap-3 text-emerald-400 font-medium">
-                                    <i class="fa-solid fa-circle-check"></i>
-                                    មិនតម្រូវឱ្យបញ្ចូលកាតធនាគារ
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+        
+        <!-- Hero Section -->
+        <section class="text-center my-10 md:my-16 max-w-3xl mx-auto">
+            <span class="px-3 py-1 text-xs font-semibold bg-cyan-500/10 text-cyan-400 rounded-full border border-cyan-500/20 inline-block mb-4">
+                ជំនាន់ថ្មី៖ គាំទ្រការ Upload ឯកសារធំៗគ្មានដែនកំណត់ និងបំប្លែងជារបាយការណ៍
+            </span>
+            <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+                កត់ត្រារាល់ការសន្ទនា និងបំប្លែងជា <span class="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">របាយការណ៍ផ្លូវការ</span>
+            </h2>
+            <p class="text-gray-400 text-base md:text-lg mb-8 leading-relaxed">
+                បំប្លែងសំឡេងនិយាយផ្ទាល់ ឬឯកសារសំឡេងដែលបានថតទុកស្រាប់ (ទោះបីធំ ឬវែងប៉ុណ្ណាក៏ដោយ) ទៅជាអក្សរយ៉ាងមានទំនុកចិត្ត ត្រឹមត្រូវតាមសំឡេងដើម ១០០% ដោយមិនបន្ថែមន័យលើស និងអាចបង្កើតជារបាយការណ៍ភ្លាមៗ។
+            </p>
         </section>
 
-
-        <!-- WORKSPACE SECTION (APPLICATION MAIN PAGE) -->
-        <section id="workspace-page" class="hidden transition-all duration-500 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Main Workspace (The Tool) -->
+        <section id="tool" class="bg-slate-900 border border-gray-800 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden mb-16">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
             
-            <!-- Workspace Subheader / Actions -->
-            <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8">
-                <div>
-                    <button onclick="navigateTo('home')" class="inline-flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 font-medium mb-2 transition-colors">
-                        <i class="fa-solid fa-arrow-left"></i> ត្រឡប់ទៅកាន់ទំព័រដើមវិញ
-                    </button>
-                    <h1 class="font-header text-xl sm:text-2xl text-white flex items-center gap-2.5">
-                        <i class="fa-solid fa-feather-pointed text-brand-500"></i>
-                        ស្ទូឌីយ៉ូកត់ត្រា AI KH <span class="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-sans">WORKSPACE FREE</span>
-                    </h1>
+            <!-- Tool Settings Banner -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <!-- Source selection -->
+                <div class="bg-slate-950/60 p-4 rounded-2xl border border-gray-800 flex flex-col justify-between">
+                    <label class="text-xs text-gray-400 mb-2 block flex items-center gap-1.5">
+                        <i data-lucide="settings" class="w-3.5 h-3.5 text-cyan-400"></i> ប្រភពសំឡេងបញ្ចូល
+                    </label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="btn-mode-record" onclick="switchInputMode('record')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-cyan-600 text-white transition">
+                            <i data-lucide="mic" class="w-4 h-4"></i> និយាយផ្ទាល់
+                        </button>
+                        <button id="btn-mode-upload" onclick="switchInputMode('upload')" class="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-slate-800 text-gray-300 hover:bg-slate-700 transition">
+                            <i data-lucide="upload" class="w-4 h-4"></i> Upload ឯកសារ
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Input Controls Row -->
-                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                    <!-- Demo files selector for fast testing -->
-                    <div class="relative w-full sm:w-auto">
-                        <select id="demo-selector" onchange="loadDemoContent(this.value)" class="w-full bg-brand-card/80 border border-white/10 hover:border-white/20 text-gray-200 text-xs rounded-xl px-4 py-3 cursor-pointer focus:outline-none focus:border-brand-500">
-                            <option value="">-- សាកល្បងជាមួយគំរូប្រជុំ --</option>
-                            <option value="meeting_1">១. កិច្ចប្រជុំផែនការយុទ្ធសាស្ត្រទីផ្សារ (ខ្មែរ-លាយអង់គ្លេស)</option>
-                            <option value="meeting_2">២. កិច្ចសម្ភាសន៍ការងារយុវជន និងបច្ចេកវិទ្យា (ខ្មែរ)</option>
-                            <option value="meeting_3">៣. កិច្ចពិភាក្សាដោះស្រាយបញ្ហាបច្ចេកទេសផលិតផល</option>
-                        </select>
-                    </div>
+                <!-- Target Language -->
+                <div class="bg-slate-950/60 p-4 rounded-2xl border border-gray-800">
+                    <label class="text-xs text-gray-400 mb-2 block flex items-center gap-1.5">
+                        <i data-lucide="languages" class="w-3.5 h-3.5 text-cyan-400"></i> ភាសាសម្រេច (Translation)
+                    </label>
+                    <select id="select-lang" class="w-full bg-slate-900 border border-gray-800 rounded-xl px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-cyan-500">
+                        <option value="khmer">រក្សាទុកជាភាសាដើម (ខ្មែរ)</option>
+                        <option value="english">បកប្រែជាភាសា អង់គ្លេស (English)</option>
+                        <option value="chinese">បកប្រែជាភាសា ចិន (中文)</option>
+                        <option value="thai">បកប្រែជាភាសា ថៃ (ไทย)</option>
+                        <option value="french">បកប្រែជាភាសា បារាំង (Français)</option>
+                    </select>
+                </div>
 
-                    <button onclick="triggerFileInput()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl text-xs font-semibold transition-colors shadow-md">
-                        <i class="fa-solid fa-file-arrow-up"></i> បញ្ចូលឯកសារសំឡេង
-                    </button>
-                    <input type="file" id="audio-file-input" accept="audio/*,video/*" class="hidden" onchange="handleAudioUpload(event)">
-                    
-                    <button id="record-btn" onclick="toggleRecording()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-3 rounded-xl text-xs font-semibold transition-colors shadow-md shadow-rose-600/10">
-                        <i class="fa-solid fa-microphone"></i> <span id="record-btn-text">ថតសំឡេងផ្ទាល់</span>
-                    </button>
+                <!-- Report Template Selection -->
+                <div class="bg-slate-950/60 p-4 rounded-2xl border border-gray-800">
+                    <label class="text-xs text-gray-400 mb-2 block flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-cyan-400"></i> ទម្រង់របាយការណ៍ស្វ័យប្រវត្ត
+                    </label>
+                    <select id="select-template" class="w-full bg-slate-900 border border-gray-800 rounded-xl px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-cyan-500">
+                        <option value="none">មិនបង្កើតរបាយការណ៍ (កត់ត្រាតែសំឡេង)</option>
+                        <option value="summary">របាយការណ៍សង្ខេបខ្លីខ្លឹម</option>
+                        <option value="meeting">កំណត់ហេតុកិច្ចប្រជុំផ្លូវការ (Meeting Minutes)</option>
+                        <option value="action_items">បញ្ជីការងារត្រូវបន្តធ្វើ (Action Items)</option>
+                        <option value="education">កត់ត្រាខ្លឹមសារមេរៀន (Study Notes)</option>
+                    </select>
                 </div>
             </div>
 
-            <!-- Audio Player & Visualizer Box (Displayed when file uploaded or during recording) -->
-            <div id="audio-panel" class="hidden bg-brand-card/90 border border-white/10 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
-                <div class="flex items-center gap-4 w-full md:w-auto">
-                    <button id="player-play-btn" onclick="togglePlayAudio()" class="w-12 h-12 rounded-full bg-brand-500 hover:bg-brand-600 text-white flex items-center justify-center text-lg shadow-lg shadow-brand-500/20 shrink-0">
-                        <i class="fa-solid fa-play"></i>
-                    </button>
-                    <div class="overflow-hidden">
-                        <h4 id="audio-file-title" class="text-sm font-semibold text-white truncate max-w-xs sm:max-w-md">គំរូប្រជុំទីផ្សារ.mp3</h4>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span id="audio-time-current" class="text-xs text-gray-400">0:00</span>
-                            <span class="text-xs text-gray-500">/</span>
-                            <span id="audio-time-duration" class="text-xs text-gray-500">0:00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Custom visualizer / progress slider -->
-                <div class="flex-1 w-full max-w-xl flex flex-col gap-2">
-                    <div class="h-10 bg-brand-dark/50 rounded-lg relative overflow-hidden">
-                        <canvas id="visualizer-canvas" class="w-full h-full"></canvas>
-                        <!-- Interactive progress bar -->
-                        <div class="absolute inset-0 cursor-pointer flex items-end opacity-0 hover:opacity-10 transition-opacity">
-                            <div class="w-full h-2 bg-brand-500/30"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-3 shrink-0">
-                    <span class="text-xs text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2.5 py-1 rounded-md font-semibold">
-                        AUDIO IS SYNCED
-                    </span>
-                    <button onclick="closeAudioPanel()" class="text-gray-400 hover:text-white text-sm"><i class="fa-solid fa-times"></i></button>
-                </div>
-            </div>
-
-            <!-- Main Workspace Editor Workspace Layout -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <!-- Workspace Columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                <!-- LEFT COLUMN: Transcription Editor (Col Span 7) -->
-                <div class="lg:col-span-7 flex flex-col bg-brand-card/50 border border-white/5 rounded-3xl overflow-hidden shadow-xl min-h-[550px]">
-                    
-                    <!-- Editor Header Controls -->
-                    <div class="p-5 border-b border-white/5 bg-brand-card flex items-center justify-between flex-wrap gap-3">
-                        <div class="flex items-center gap-2.5">
-                            <span class="w-2 h-2 rounded-full bg-brand-500"></span>
-                            <h3 class="text-sm font-semibold text-white">អត្ថបទដែលបានបម្លែង</h3>
-                            <span id="segment-count" class="text-[10px] bg-brand-500/20 text-indigo-300 px-2 py-0.5 rounded-full font-bold">0 segments</span>
+                <!-- Left Column: Input and Control -->
+                <div class="flex flex-col gap-6">
+                    <!-- Audio Recorder Interface -->
+                    <div id="container-record" class="bg-slate-950/40 border border-gray-800/80 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[250px] relative">
+                        <div id="mic-status" class="absolute top-4 left-4 flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-gray-500" id="status-indicator"></span>
+                            <span class="text-xs text-gray-400" id="status-text">ឧបករណ៍រួចរាល់</span>
                         </div>
 
-                        <!-- Editor Actions -->
-                        <div class="flex items-center gap-2">
-                            <!-- Clean up stuttering toggle simulated -->
-                            <button onclick="toggleCleanTranscript()" id="clean-mode-btn" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-brand-500/10 border border-brand-500/20 text-brand-300 hover:bg-brand-500/20 transition-all font-medium">
-                                <i class="fa-solid fa-wand-magic-sparkles"></i> <span>កែសម្រួលអក្សរស្ទួន</span>
+                        <!-- Timer display -->
+                        <div id="timer" class="text-3xl font-mono text-gray-400 mb-6 hidden">00:00</div>
+
+                        <!-- Mic Animation Circle -->
+                        <div id="visualizer-circle" class="w-24 h-24 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-6 transition-all duration-300">
+                            <div class="w-16 h-16 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg">
+                                <i data-lucide="mic" id="mic-icon" class="w-8 h-8"></i>
+                            </div>
+                        </div>
+
+                        <!-- Action Controls -->
+                        <div class="flex flex-col items-center gap-3 w-full max-w-xs">
+                            <button id="btn-action-record" onclick="toggleRecording()" class="w-full py-3 px-6 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl shadow-lg shadow-cyan-500/20 transition flex items-center justify-center gap-2">
+                                <i data-lucide="play" class="w-5 h-5 fill-current"></i>
+                                <span>ចាប់ផ្ដើមកត់ត្រា</span>
                             </button>
-                            <button onclick="addNewSegment()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all font-medium">
-                                <i class="fa-solid fa-plus"></i> បន្ថែមកថាខណ្ឌ
-                            </button>
+                            <p class="text-xs text-gray-500 text-center">ចុចដើម្បីនិយាយផ្ទាល់តាមរយៈមីក្រូហ្វូន</p>
                         </div>
                     </div>
 
-                    <!-- Editor Editable Area Container -->
-                    <div class="flex-1 p-6 overflow-y-auto max-h-[500px]" id="editor-container">
-                        <!-- Default empty state -->
-                        <div id="editor-empty-state" class="h-full flex flex-col items-center justify-center text-center py-20">
-                            <div class="w-16 h-16 rounded-2xl bg-brand-500/10 flex items-center justify-center text-brand-400 text-2xl mb-4">
-                                <i class="fa-solid fa-microphone-lines animate-pulse"></i>
+                    <!-- Audio Upload Interface (Hidden by default) -->
+                    <div id="container-upload" class="bg-slate-950/40 border border-gray-800/80 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[250px] hidden">
+                        <!-- Drag & Drop Zone -->
+                        <div id="drop-zone" class="w-full border-2 border-dashed border-gray-700 hover:border-cyan-500/60 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition bg-slate-900/30" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+                            <input type="file" id="file-input" accept="audio/*" class="hidden" onchange="handleFileSelect(event)">
+                            <div class="p-3 bg-slate-800 rounded-full text-cyan-400 mb-3">
+                                <i data-lucide="upload-cloud" class="w-8 h-8"></i>
                             </div>
-                            <h4 class="text-sm font-semibold text-white mb-2">មិនទាន់មានអត្ថបទនៅឡើយទេ</h4>
-                            <p class="text-xs text-gray-400 max-w-sm leading-relaxed mb-6">
-                                សូមបញ្ចូលឯកសារសំឡេង ឬជ្រើសរើសគំរូប្រជុំខាងលើ ដើម្បីធ្វើការបម្លែងដោយស្វ័យប្រវត្តិ។
-                            </p>
-                            <div class="flex gap-3">
-                                <button onclick="triggerFileInput()" class="inline-flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-300 text-xs font-semibold border border-white/10 px-4 py-2.5 rounded-xl transition-all">
-                                    <i class="fa-solid fa-upload text-[11px]"></i> ជ្រើសឯកសារ
-                                </button>
-                                <button onclick="loadDemoContent('meeting_1')" class="inline-flex items-center gap-2 bg-indigo-600/25 hover:bg-indigo-600/40 border border-indigo-500/30 text-indigo-300 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all">
-                                    សាកល្បងគំរូទី១
-                                </button>
-                            </div>
+                            <h3 class="text-sm font-semibold text-gray-200 mb-1">ទម្លាក់ឯកសារសំឡេងនៅទីនេះ</h3>
+                            <p class="text-xs text-gray-400 mb-4">ឬ ចុចស្វែងរកឯកសារក្នុងកុំព្យូទ័រ</p>
+                            <span class="text-[10px] text-cyan-400 font-semibold bg-cyan-500/10 px-2 py-1 rounded border border-cyan-500/20">គ្មានការកំណត់ទំហំឯកសារ (Unlimited Size Support)</span>
                         </div>
 
-                        <!-- Dynamic Segments will go here -->
-                        <div id="transcription-segments" class="hidden space-y-6"></div>
+                        <!-- Selected File Info -->
+                        <div id="file-info" class="w-full mt-4 bg-slate-900/50 border border-gray-800 rounded-xl p-3 flex items-center justify-between hidden">
+                            <div class="flex items-center gap-2 overflow-hidden">
+                                <i data-lucide="music" class="w-4 h-4 text-cyan-400 flex-shrink-0"></i>
+                                <span id="file-name" class="text-xs text-gray-300 truncate font-mono">audio_file.mp3</span>
+                            </div>
+                            <button onclick="clearSelectedFile()" class="p-1 hover:bg-slate-800 rounded text-red-400">
+                                <i data-lucide="x" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Process Upload Button -->
+                        <button id="btn-process-file" onclick="processUploadedFile()" class="w-full mt-4 py-3 px-6 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 font-bold rounded-xl transition flex items-center justify-center gap-2 opacity-50 cursor-not-allowed" disabled>
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            <span>បំប្លែងសំឡេង និងបង្កើតរបាយការណ៍</span>
+                        </button>
                     </div>
 
-                    <!-- Editor Footer Status / Copy Actions -->
-                    <div class="p-5 border-t border-white/5 bg-brand-card flex items-center justify-between flex-wrap gap-3">
-                        <div class="flex items-center gap-1.5 text-xs text-gray-400">
-                            <i class="fa-solid fa-database"></i> 
-                            <span id="auto-save-status">រក្សាទុកស្វ័យប្រវត្តក្នុងតំបន់</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="copyTranscriptToClipboard()" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs hover:bg-white/5 text-gray-300 transition-colors">
-                                <i class="fa-solid fa-copy"></i> ចម្លងទុក
-                            </button>
-                            
-                            <!-- Export Dropdown Trigger -->
-                            <div class="relative inline-block text-left">
-                                <button onclick="toggleExportMenu()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-500 text-white transition-colors">
-                                    <i class="fa-solid fa-file-export"></i> ទាញយករបាយការណ៍ <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                                </button>
-                                <!-- Export Dropdown Panel -->
-                                <div id="export-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-44 rounded-xl bg-brand-card border border-white/10 shadow-xl overflow-hidden z-20">
-                                    <div class="py-1">
-                                        <button onclick="exportToFormat('docx')" class="flex items-center gap-2 w-full px-4 py-2.5 text-xs text-gray-300 hover:bg-white/5 hover:text-white text-left">
-                                            <i class="fa-solid fa-file-word text-blue-400"></i> Microsoft Word (.docx)
-                                        </button>
-                                        <button onclick="exportToFormat('pdf')" class="flex items-center gap-2 w-full px-4 py-2.5 text-xs text-gray-300 hover:bg-white/5 hover:text-white text-left">
-                                            <i class="fa-solid fa-file-pdf text-rose-400"></i> PDF Document (.pdf)
-                                        </button>
-                                        <button onclick="exportToFormat('srt')" class="flex items-center gap-2 w-full px-4 py-2.5 text-xs text-gray-300 hover:bg-white/5 hover:text-white text-left">
-                                            <i class="fa-solid fa-closed-captioning text-yellow-400"></i> Subtitles (.srt)
-                                        </button>
-                                        <button onclick="exportToFormat('txt')" class="flex items-center gap-2 w-full px-4 py-2.5 text-xs text-gray-300 hover:bg-white/5 hover:text-white text-left">
-                                            <i class="fa-solid fa-file-text text-gray-400"></i> Text File (.txt)
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Audio Preview Player (Appears when audio is ready) -->
+                    <div id="audio-preview-container" class="bg-slate-950/40 border border-gray-800/80 rounded-2xl p-4 hidden">
+                        <span class="text-xs text-gray-400 block mb-2">ស្ដាប់សំឡេងឡើងវិញ៖</span>
+                        <audio id="audio-player" controls class="w-full bg-slate-900 rounded-lg"></audio>
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: AI Copilot Panel (Col Span 5) -->
-                <div class="lg:col-span-5 flex flex-col bg-brand-card/50 border border-white/5 rounded-3xl overflow-hidden shadow-xl min-h-[550px]">
-                    <!-- Tabs Selection -->
-                    <div class="bg-brand-card/85 border-b border-white/5 grid grid-cols-4 text-center">
-                        <button onclick="switchAITab('summary')" id="tab-summary" class="py-3.5 text-xs font-semibold border-b-2 border-brand-500 text-white transition-all flex flex-col items-center gap-1">
-                            <i class="fa-solid fa-file-invoice"></i> សង្ខេបប្រជុំ
-                        </button>
-                        <button onclick="switchAITab('actions')" id="tab-actions" class="py-3.5 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex flex-col items-center gap-1">
-                            <i class="fa-solid fa-list-check"></i> ការងារបន្ទាប់
-                        </button>
-                        <button onclick="switchAITab('translate')" id="tab-translate" class="py-3.5 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex flex-col items-center gap-1">
-                            <i class="fa-solid fa-language"></i> បកប្រែភាសា
-                        </button>
-                        <button onclick="switchAITab('chat')" id="tab-chat" class="py-3.5 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex flex-col items-center gap-1">
-                            <i class="fa-solid fa-comments-sparkles"></i> ជជែក AI (Chat)
-                        </button>
-                    </div>
-
-                    <!-- AI Actions / Outputs Body Content -->
-                    <div class="flex-1 p-6 overflow-y-auto max-h-[450px]" id="ai-tab-content">
-                        
-                        <!-- AI TAB: SUMMARY (Default) -->
-                        <div id="content-summary" class="space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h4 class="text-sm font-semibold text-white">កំណត់ហេតុ និងរបាយការណ៍សង្ខេប</h4>
-                                <button onclick="generateAISummary()" class="inline-flex items-center gap-1 text-xs text-brand-400 hover:text-indigo-300 font-medium bg-brand-500/10 hover:bg-brand-500/20 px-2 py-1.5 rounded-lg transition-all">
-                                    <i class="fa-solid fa-rotate"></i> កែលម្អជាថ្មី
+                <!-- Right Column: Transcribed Output & Report -->
+                <div class="flex flex-col gap-4">
+                    <!-- Result Box -->
+                    <div class="bg-slate-950/40 border border-gray-800/80 rounded-2xl p-5 flex flex-col flex-grow min-h-[300px]">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="align-left" class="w-4 h-4 text-cyan-400"></i>
+                                <h3 class="text-sm font-semibold text-gray-200">អត្ថបទដែលបានកត់ត្រា</h3>
+                            </div>
+                            <!-- Actions -->
+                            <div class="flex items-center gap-1">
+                                <button onclick="copyToClipboard('transcription-output')" class="p-1.5 hover:bg-slate-800 rounded text-gray-400 hover:text-white transition" title="ចម្លងទុក">
+                                    <i data-lucide="copy" class="w-4 h-4"></i>
+                                </button>
+                                <button id="btn-speak-text" onclick="speakOutputText()" class="p-1.5 hover:bg-slate-800 rounded text-gray-400 hover:text-white transition" title="អានឱ្យស្ដាប់">
+                                    <i data-lucide="volume-2" class="w-4 h-4"></i>
                                 </button>
                             </div>
+                        </div>
+
+                        <!-- Processing Loader with detailed steps and status -->
+                        <div id="transcribe-loading" class="hidden flex-grow flex flex-col items-center justify-center py-10 text-center">
+                            <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                            <p id="transcribe-status-title" class="text-sm text-cyan-400 font-medium">កំពុងអានឯកសារសំឡេង...</p>
+                            <p id="transcribe-status-detail" class="text-xs text-gray-500 mt-1 max-w-xs mx-auto">ឯកសារធំកំពុងត្រូវបានរៀបចំ និងបែងចែកដើម្បីកត់ត្រាឱ្យបានត្រឹមត្រូវបំផុត</p>
                             
-                            <!-- Static output or Dynamic -->
-                            <div id="ai-summary-output" class="text-sm text-gray-300 leading-relaxed bg-brand-dark/40 border border-white/5 rounded-2xl p-5 min-h-[250px] space-y-4">
-                                <p class="text-xs text-gray-400 italic">មិនទាន់មានទិន្នន័យគ្រប់គ្រាន់។ សូមបញ្ចូលសំឡេង ឬជ្រើសរើសគំរូប្រជុំជាមុនសិន។</p>
+                            <!-- Custom Progress Bar -->
+                            <div id="progress-bar-container" class="w-4/5 bg-slate-800 h-2 rounded-full mt-4 overflow-hidden hidden">
+                                <div id="progress-bar-fill" class="bg-gradient-to-r from-cyan-400 to-blue-500 h-full w-0 transition-all duration-300"></div>
                             </div>
+                            <span id="progress-text" class="text-xs text-cyan-500 font-mono mt-1.5 hidden">0%</span>
                         </div>
 
-                        <!-- AI TAB: ACTION ITEMS -->
-                        <div id="content-actions" class="hidden space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h4 class="text-sm font-semibold text-white">កិច្ចការងារត្រូវធ្វើបន្ត (Action Items)</h4>
-                                <button onclick="generateAIActions()" class="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 font-medium bg-indigo-500/10 hover:bg-indigo-500/20 px-2 py-1.5 rounded-lg transition-all">
-                                    <i class="fa-solid fa-rotate"></i> សង្គ្រោះជាថ្មី
+                        <!-- Output Area -->
+                        <div id="transcription-output" class="text-gray-300 text-sm leading-relaxed overflow-y-auto flex-grow h-[150px] whitespace-pre-wrap">
+                            រាល់ពាក្យពេចន៍ដែលអ្នកនិយាយផ្ទាល់ ឬកត់ត្រាចេញពីការ Upload នឹងបង្ហាញឡើងនៅទីនេះដោយស្វ័យប្រវត្ត...
+                        </div>
+
+                        <!-- Export Button Area for Transcription -->
+                        <div id="transcription-export-container" class="mt-4 pt-3 border-t border-gray-800/60 flex justify-end hidden">
+                            <!-- Custom Download Dropdown -->
+                            <div class="relative inline-block text-left">
+                                <button onclick="toggleDropdown('trans-download-dropdown')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm rounded-xl flex items-center gap-2 shadow-lg transition duration-200">
+                                    <i data-lucide="file-down" class="w-4.5 h-4.5"></i>
+                                    <span>ទាញយករក្សាទុក</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
                                 </button>
-                            </div>
-
-                            <div id="ai-actions-output" class="text-sm text-gray-300 leading-relaxed bg-brand-dark/40 border border-white/5 rounded-2xl p-5 min-h-[250px]">
-                                <p class="text-xs text-gray-400 italic">មិនទាន់មានទិន្នន័យគ្រប់គ្រាន់។ សូមបញ្ចូលសំឡេង ឬជ្រើសរើសគំរូប្រជុំជាមុនសិន។</p>
-                            </div>
-                        </div>
-
-                        <!-- AI TAB: TRANSLATION -->
-                        <div id="content-translate" class="hidden space-y-4">
-                            <div class="flex items-center justify-between">
-                                <h4 class="text-sm font-semibold text-white">បកប្រែខ្លឹមសារប្រជុំទាំងស្រុង</h4>
-                                <div class="flex gap-2">
-                                    <button onclick="translateTranscript('en')" class="text-xs bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg font-medium transition-colors">បកប្រែជាអង់គ្លេស (EN)</button>
-                                    <button onclick="translateTranscript('km')" class="text-xs bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 px-3 py-1.5 rounded-lg font-medium transition-colors">ខ្មែរ (KM)</button>
+                                
+                                <div id="trans-download-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-64 rounded-2xl bg-slate-950 border border-gray-800 shadow-2xl p-2 z-50">
+                                    <button onclick="exportFile('docx', 'transcription-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-blue-600/10 text-blue-500 flex items-center justify-center font-bold">W</span>
+                                        <div>
+                                            <div class="font-semibold">Microsoft Word</div>
+                                            <div class="text-[10px] text-gray-500">(.docx)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('pdf', 'transcription-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-red-600/10 text-red-500 flex items-center justify-center font-bold">PDF</span>
+                                        <div>
+                                            <div class="font-semibold">PDF Document</div>
+                                            <div class="text-[10px] text-gray-500">(.pdf)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('srt', 'transcription-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-yellow-600/10 text-yellow-500 flex items-center justify-center font-semibold text-xs">CC</span>
+                                        <div>
+                                            <div class="font-semibold">Subtitles</div>
+                                            <div class="text-[10px] text-gray-500">(.srt)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('txt', 'transcription-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-gray-600/10 text-gray-400 flex items-center justify-center">
+                                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                                        </span>
+                                        <div>
+                                            <div class="font-semibold">Text File</div>
+                                            <div class="text-[10px] text-gray-500">(.txt)</div>
+                                        </div>
+                                    </button>
                                 </div>
-                            </div>
-
-                            <div id="ai-translate-output" class="text-sm text-gray-300 leading-relaxed bg-brand-dark/40 border border-white/5 rounded-2xl p-5 min-h-[250px] space-y-3">
-                                <p class="text-xs text-gray-400 italic">សូមចុចប៊ូតុង "បកប្រែជាអង់គ្លេស" ដើម្បីទទួលបានលទ្ធផលបកប្រែជាភាសាផ្លូវការភ្លាមៗ。</p>
-                            </div>
-                        </div>
-
-                        <!-- AI TAB: CHAT -->
-                        <div id="content-chat" class="hidden flex flex-col h-full space-y-4 min-h-[350px]">
-                            <div class="flex-1 overflow-y-auto space-y-4 p-4 bg-brand-dark/30 rounded-2xl border border-white/5 max-h-[250px]" id="chat-messages-container">
-                                <!-- Chat Intro -->
-                                <div class="flex gap-2.5 items-start">
-                                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0">
-                                        <i class="fa-solid fa-sparkles text-[11px] text-white"></i>
-                                    </div>
-                                    <div class="bg-white/5 p-3.5 rounded-2xl text-xs leading-relaxed max-w-[85%]">
-                                        <p class="font-semibold text-white mb-1">កត់ត្រា AI KH Assistant</p>
-                                        សួស្តី! ខ្ញុំជាជំនួយការកត់ត្រា AI KH។ អ្នកអាចសួរខ្ញុំអំពីខ្លឹមសារនៃការប្រជុំនេះបាន ដូចជា "តើនរណាជាអ្នកនិយាយអំពីផែនការយុទ្ធសាស្ត្រ?" ឬ "សង្ខេបត្រង់ចំណុចថវិការឱ្យខ្ញុំបន្តិច។"
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Chat Input Form -->
-                            <div class="flex gap-2 items-center">
-                                <input type="text" id="chat-user-input" placeholder="សរសេរសំណួររបស់អ្នកនៅទីនេះ..." class="flex-1 bg-brand-dark border border-white/10 focus:border-brand-500 rounded-xl px-4 py-3 text-xs text-gray-200 focus:outline-none">
-                                <button onclick="sendChatMessage()" class="w-10 h-10 shrink-0 rounded-xl bg-brand-600 hover:bg-brand-500 text-white flex items-center justify-center text-sm transition-colors">
-                                    <i class="fa-solid fa-paper-plane"></i>
-                                </button>
                             </div>
                         </div>
 
                     </div>
 
-                    <!-- AI Copilot Footer / Status Indicator -->
-                    <div class="p-4 border-t border-white/5 bg-brand-card/90 flex items-center justify-between text-[11px] text-gray-400">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-cpu text-indigo-400"></i> Powered by Kottra-Llama 3.2 Khmer Optimized</span>
-                        <span class="text-emerald-400 font-semibold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE</span>
+                    <!-- AI Report Box (Conditional display) -->
+                    <div id="report-card" class="bg-slate-950/60 border border-cyan-500/20 rounded-2xl p-5 flex flex-col min-h-[200px] hidden">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i>
+                                <h3 class="text-sm font-semibold text-cyan-400">របាយការណ៍ / សេចក្ដីសង្ខេប AI</h3>
+                            </div>
+                            <button onclick="copyToClipboard('report-output')" class="p-1.5 hover:bg-slate-800 rounded text-gray-400 hover:text-white transition" title="ចម្លងទុក">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+
+                        <!-- Loader for report -->
+                        <div id="report-loading" class="hidden py-8 flex flex-col items-center justify-center">
+                            <div class="flex gap-1 mb-3">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style="animation-delay: 0.1s"></span>
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style="animation-delay: 0.2s"></span>
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style="animation-delay: 0.3s"></span>
+                            </div>
+                            <p class="text-xs text-gray-400">កំពុងវិភាគបង្កើតរបាយការណ៍...</p>
+                        </div>
+
+                        <!-- Report Output Area -->
+                        <div id="report-output" class="text-gray-300 text-sm leading-relaxed overflow-y-auto max-h-[250px] whitespace-pre-wrap">
+                            របាយការណ៍វិភាគលម្អិតនឹងត្រូវបានចងក្រងនៅទីនេះ...
+                        </div>
+
+                        <!-- Export Button Area for Report -->
+                        <div id="report-export-container" class="mt-4 pt-3 border-t border-gray-800/60 flex justify-end hidden">
+                            <!-- Custom Download Dropdown -->
+                            <div class="relative inline-block text-left">
+                                <button onclick="toggleDropdown('report-download-dropdown')" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm rounded-xl flex items-center gap-2 shadow-lg transition duration-200">
+                                    <i data-lucide="file-down" class="w-4.5 h-4.5"></i>
+                                    <span>ទាញយករបាយការណ៍</span>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 ml-1"></i>
+                                </button>
+                                
+                                <div id="report-download-dropdown" class="hidden absolute right-0 bottom-full mb-2 w-64 rounded-2xl bg-slate-950 border border-gray-800 shadow-2xl p-2 z-50">
+                                    <button onclick="exportFile('docx', 'report-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-blue-600/10 text-blue-500 flex items-center justify-center font-bold">W</span>
+                                        <div>
+                                            <div class="font-semibold">Microsoft Word</div>
+                                            <div class="text-[10px] text-gray-500">(.docx)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('pdf', 'report-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-red-600/10 text-red-500 flex items-center justify-center font-bold">PDF</span>
+                                        <div>
+                                            <div class="font-semibold">PDF Document</div>
+                                            <div class="text-[10px] text-gray-500">(.pdf)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('srt', 'report-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-yellow-600/10 text-yellow-500 flex items-center justify-center font-semibold text-xs">CC</span>
+                                        <div>
+                                            <div class="font-semibold">Subtitles</div>
+                                            <div class="text-[10px] text-gray-500">(.srt)</div>
+                                        </div>
+                                    </button>
+                                    <button onclick="exportFile('txt', 'report-output')" class="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-900 rounded-xl transition text-left text-xs text-gray-300 hover:text-white">
+                                        <span class="w-8 h-8 rounded-lg bg-gray-600/10 text-gray-400 flex items-center justify-center">
+                                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                                        </span>
+                                        <div>
+                                            <div class="font-semibold">Text File</div>
+                                            <div class="text-[10px] text-gray-500">(.txt)</div>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
             </div>
+        </section>
 
+        <!-- Information / Feature Section -->
+        <section id="features" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            <div class="p-6 bg-slate-900/50 border border-gray-800 rounded-2xl hover:border-cyan-500/30 transition">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-gray-200">គ្មានការលម្អៀង ឬបន្ថែមន័យ</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    ម៉ូដែល AI ត្រូវបានកំណត់យ៉ាងតឹងរ៉ឹងក្នុងការចម្លងសំឡេងឱ្យដូចនឹងការនិយាយពិតៗ ដោយមិនបន្ថែមគំនិត ឬការកែប្រែន័យឡើយ។
+                </p>
+            </div>
+            
+            <div class="p-6 bg-slate-900/50 border border-gray-800 rounded-2xl hover:border-cyan-500/30 transition">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-gray-200">បំប្លែងជារបាយការណ៍ភ្លាមៗ</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    សន្សំសំចៃពេលវេលាដោយការបំប្លែងទិន្នន័យសំឡេងដែលវែងអន្លាយ ឱ្យទៅជារបាយការណ៍សង្ខេប ឬកំណត់ហេតុកិច្ចប្រជុំផ្លូវការក្នុងពេល ១ នាទី។
+                </p>
+            </div>
+
+            <div class="p-6 bg-slate-900/50 border border-gray-800 rounded-2xl hover:border-cyan-500/30 transition">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                    <i data-lucide="globe-2" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2 text-gray-200">គាំទ្រពហុភាសា និងការបកប្រែ</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    មិនត្រឹមតែភាសាខ្មែរទេ អ្នកអាចនិយាយ ឬ Upload សំឡេងជាភាសាផ្សេងៗ ហើយបកប្រែមកជាភាសាខ្មែរ ឬភាសាដទៃទៀតបានភ្លាមៗ។
+                </p>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="border-t border-gray-800 pt-16 mb-16">
+            <h3 class="text-2xl font-bold text-center mb-12">ដំណើរការការងារដ៏ងាយស្រួល ៣ ជំហាន</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-slate-800 border border-gray-700 flex items-center justify-center text-lg font-bold text-cyan-400 mb-4">១</div>
+                    <h4 class="font-semibold text-base mb-2">បញ្ចូលសំឡេង</h4>
+                    <p class="text-gray-400 text-xs px-4">ជ្រើសរើសការនិយាយផ្ទាល់តាមមីក្រូហ្វូន ឬទាញទម្លាក់ឯកសារសំឡេងដែលថតស្រាប់បញ្ចូលក្នុងប្រព័ន្ធ。</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-slate-800 border border-gray-700 flex items-center justify-center text-lg font-bold text-cyan-400 mb-4">២</div>
+                    <h4 class="font-semibold text-base mb-2">កំណត់គោលដៅ AI</h4>
+                    <p class="text-gray-400 text-xs px-4">ជ្រើសរើសទម្រង់នៃការចម្លង ដូចជាការបកប្រែភាសា និងជ្រើសរើសម៉ូដែលគំរូរៀបចំរបាយការណ៍ការងារ。</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-slate-800 border border-gray-700 flex items-center justify-center text-lg font-bold text-cyan-400 mb-4">៣</div>
+                    <h4 class="font-semibold text-base mb-2">ទទួលបានលទ្ធផល និងទាញយក</h4>
+                    <p class="text-gray-400 text-xs px-4">ចម្លងអត្ថបទដែលកត់ត្រារួច ឬទាញយករបាយការណ៍វិភាគ ដើម្បីប្រើប្រាស់ក្នុងកិច្ចការងារប្រចាំថ្ងៃ。</p>
+                </div>
+            </div>
         </section>
 
     </main>
 
-    <!-- Custom Dialog / Notification System (Replacing Alert) -->
-    <div id="dialog-overlay" class="fixed inset-0 bg-brand-dark/80 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
-        <div class="bg-brand-card border border-white/10 max-w-sm w-full rounded-3xl p-6 shadow-2xl relative">
-            <div id="dialog-icon-container" class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-400 flex items-center justify-center text-xl mx-auto mb-4">
-                <i class="fa-solid fa-info-circle"></i>
+    <!-- Custom Alert Modal (No browser alert) -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-slate-900 border border-gray-800 rounded-3xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="w-12 h-12 rounded-full bg-cyan-500/10 text-cyan-400 flex items-center justify-center mb-4">
+                <i data-lucide="info" class="w-6 h-6"></i>
             </div>
-            <h3 id="dialog-title" class="text-base font-bold text-white text-center mb-2">កត់ត្រា AI KH ជូនដំណឹង</h3>
-            <p id="dialog-message" class="text-xs text-gray-400 text-center leading-relaxed mb-6">សារព័ត៌មានលម្អិត</p>
-            <button onclick="closeDialog()" class="w-full bg-brand-600 hover:bg-brand-500 text-white font-semibold py-3 px-5 rounded-xl text-xs transition-colors">
-                យល់ព្រម
-            </button>
-        </div>
-    </div>
-
-    <!-- Processing Fullscreen overlay for Simulating Speech to Text conversion -->
-    <div id="processing-overlay" class="fixed inset-0 bg-brand-dark/95 backdrop-blur-md z-[100] hidden items-center justify-center p-6 text-center">
-        <div class="max-w-md">
-            <!-- Loader animation -->
-            <div class="relative w-24 h-24 mx-auto mb-8">
-                <div class="absolute inset-0 rounded-full border-4 border-indigo-500/10"></div>
-                <div class="absolute inset-0 rounded-full border-4 border-t-brand-500 animate-spin"></div>
-                <div class="absolute inset-4 rounded-full bg-brand-card flex items-center justify-center text-brand-400">
-                    <i class="fa-solid fa-waveform-lines text-2xl animate-pulse"></i>
-                </div>
-            </div>
-            
-            <h3 class="font-header text-lg text-white mb-3">កំពុងដំណើរការវិភាគ និងបម្លែងសំឡេង</h3>
-            <p class="text-xs text-gray-400 leading-relaxed mb-6">ម៉ាស៊ីន AI កត់ត្រា កំពុងកំណត់សម្គាល់អ្នកនិយាយ បង្កើតត្រាពេលវេលា និងកម្រិតភាពត្រឹមត្រូវនៃភាសាខ្មែរ...</p>
-            
-            <!-- Dynamic progress tracker -->
-            <div class="w-full bg-white/5 rounded-full h-2 mb-2">
-                <div id="processing-bar" class="bg-gradient-to-r from-brand-600 to-indigo-500 h-full rounded-full transition-all duration-300" style="width: 5%"></div>
-            </div>
-            <div class="flex justify-between items-center text-[10px] text-gray-500">
-                <span id="processing-stage-text">ដំណាក់កាលទី ១៖ ស្រង់ទិន្នន័យសំឡេង...</span>
-                <span id="processing-percent">5%</span>
+            <h3 id="modal-title" class="text-lg font-bold mb-2 text-white">ចំណងជើងសារ</h3>
+            <p id="modal-body" class="text-sm text-gray-400 mb-6 leading-relaxed">ខ្លឹមសារសារនឹងបង្ហាញនៅទីនេះ...</p>
+            <div class="flex justify-end">
+                <button onclick="closeModal()" class="px-5 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl transition text-sm">
+                    យល់ព្រម
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-brand-dark border-t border-white/5 py-12 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-white/5 pb-8 mb-8">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-gradient-to-tr from-brand-600 to-indigo-400 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-microphone-lines text-white text-xs"></i>
-                    </div>
-                    <span class="font-header text-base text-white tracking-wider">កត់ត្រា <span class="text-brand-500">AI KH</span></span>
-                </div>
-                <div class="flex flex-wrap items-center justify-center gap-6 text-xs text-gray-400">
-                    <a href="#features" class="hover:text-white transition-colors">មុខងារ</a>
-                    <a href="#how-it-works" class="hover:text-white transition-colors">របៀបប្រើ</a>
-                    <a href="#security" class="hover:text-white transition-colors">សុវត្ថិភាពទិន្នន័យ</a>
-                    <a href="#pricing" class="hover:text-white transition-colors">ឥតគិតថ្លៃ</a>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-                <p>© 2026 កត់ត្រា AI KH (KOTTRA FREE). រក្សាសិទ្ធិគ្រប់យ៉ាងដោយយុវជនបច្ចេកវិទ្យាកម្ពុជា លោក ចេង ភារ៉ា​ ។</p>
-                <div class="flex gap-4">
-                    <span>ផលិតផលច្នៃប្រឌិតខ្ពស់សម្រាប់កម្ពុជា</span>
-                </div>
+    <footer class="border-t border-gray-800 bg-slate-950 py-8">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+            <p>© 2026 ខ្មែរកត់ត្រា Kottra ​KH AI. រក្សាសិទ្ធិគ្រប់យ៉ាងដោយយុវជនបច្ចេកវិទ្យាកម្ពុជា លោក ចេង ភារ៉ា​ ។</p>
+            <div class="flex gap-4">
+                <a href="#" class="hover:underline">គោលការណ៍ឯកជនភាព</a>
+                <a href="#" class="hover:underline">លក្ខខណ្ឌប្រើប្រាស់</a>
             </div>
         </div>
     </footer>
 
-
-    <!-- JAVASCRIPT PROGRAMMING AND LOGIC -->
     <script>
-        // Store segments globally for edit operations
-        let currentSegments = [];
-        let isCleanMode = false;
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // System Constants / Key Variables
+        const apiKey = ""; // Will be processed by environment
+        let mediaRecorder;
+        let audioChunks = [];
         let isRecording = false;
-        let recognition = null;
-        let activeTab = 'summary';
+        let selectedFile = null;
+        let recordingTimer;
+        let recordingSeconds = 0;
+        let audioBlob = null;
+        let activeInputMode = 'record'; // 'record' or 'upload'
 
-        // Simulated Audio Playback Status
-        let audioPlaying = false;
-        let audioTimer = null;
-        let audioDuration = 184; // 3 mins 4 seconds
-        let audioCurrentTime = 0;
+        // Switch Input Mode
+        function switchInputMode(mode) {
+            activeInputMode = mode;
+            const btnRecord = document.getElementById('btn-mode-record');
+            const btnUpload = document.getElementById('btn-mode-upload');
+            const containerRecord = document.getElementById('container-record');
+            const containerUpload = document.getElementById('container-upload');
 
-        // Custom Demo Data Store
-        const demoData = {
-            meeting_1: {
-                title: "កិច្ចប្រជុំផែនការយុទ្ធសាស្ត្រទីផ្សារ.mp3",
-                duration: 165,
-                segments: [
-                    { id: 1, speaker: "សាន សុវណ្ណារ៉ា (CEO)", timestamp: "00:00", text: "សួស្តីរាល់គ្នា! ថ្ងៃនេះយើងប្រជុំគ្នាពី Strategic plan សម្រាប់ត្រីមាសទី៣ និងការផ្សព្វផ្សាយផលិតផលថ្មីរបស់យើង។" },
-                    { id: 2, speaker: "លី ស្រីម៉ៅ (Marketing)", timestamp: "00:15", text: "ចាសជម្រាបសួរលោក CEO! សម្រាប់កញ្ចប់ថវិកា Promotion យើងបានរៀបចំរួចហើយ ដែលនឹងផ្តោតលើ Social media ធំៗដូចជា TikTok, Facebook និង Telegram Bot ថ្មីរបស់ កត់ត្រា AI KH។" },
-                    { id: 3, speaker: "សុខ ពិសិដ្ឋ (CTO)", timestamp: "00:32", text: "ចំណែកផ្នែកបច្ចេកវិទ្យា យើងកំពុងតម្លើងប្រព័ន្ធ API integration ជាមួយដៃគូ ដើម្បីឱ្យ User អាចប្រើបានស្រួល និង Fast ជាងមុន។" },
-                    { id: 4, speaker: "សាន សុវណ្ណារ៉ា (CEO)", timestamp: "00:54", text: "ល្អណាស់! ប៉ុន្តែសូមកុំភ្លេច ពិសិដ្ឋ ត្រូវធានាថា Data privacy របស់អតិថិជនគឺមានការការពារខ្ពស់ Zero retention policy ដូចដែលយើងសន្យា។" },
-                    { id: 5, speaker: "សុខ ពិសិដ្ឋ (CTO)", timestamp: "01:12", text: "បាទប្រាកដណាស់ ខ្ញុំបាន configure server-side decryption រួចហើយ មិនមានការលេចធ្លាយទិន្នន័យឡើយ។" }
-                ],
-                summary: `### 📌 កំណត់ហេតុសង្ខេប៖ កិច្ចប្រជុំផែនការយុទ្ធសាស្ត្រទីផ្សារ ត្រីមាសទី៣
-
-**ប្រធានបទធំៗនៃកិច្ចប្រជុំ៖**
-1. **ការដាក់ចេញផែនការយុទ្ធសាស្ត្រត្រីមាសទី៣** ក្រោមការដឹកនាំរបស់លោក CEO សាន សុវណ្ណារ៉ា។
-2. **ផែនការទីផ្សារ និងថវិកា Promotion** រៀបចំដោយកញ្ញា លី ស្រីម៉ៅ ដោយផ្តោតខ្លាំងលើ TikTok, Facebook និងការប្រើប្រាស់ Telegram Bot។
-3. **ការអភិវឌ្ឍបច្ចេកវិទ្យា API Integration** និងការធានាសុវត្ថិភាពទិន្នន័យ (Data Privacy) ដឹកនាំដោយលោក CTO សុខ ពិសិដ្ឋ។
-
-**សេចក្តីសន្និដ្ឋានសំខាន់ៗ៖**
-* ក្រុមការងារសម្រេចអនុម័តកញ្ចប់ថវិកាទីផ្សារដោយផ្តោតលើប្រព័ន្ធឌីជីថល។
-* ប្រព័ន្ធបច្ចេកវិទ្យាត្រូវតែធានា "Zero Retention Policy" ដើម្បីសុវត្ថិភាពទិន្នន័យរបស់អ្នកប្រើប្រាស់។`,
-                actions: `### 📋 បញ្ជីការងារដែលត្រូវអនុវត្តបន្ត៖
-
-1. 📢 **លី ស្រីម៉ៅ (Marketing):**
-   * បង្កើត Campaign Content សម្រាប់ផ្សាយលើ TikTok និង Facebook ត្រៀមបញ្ចេញនៅសប្តាហ៍ក្រោយ។
-   * រៀបចំដំណើរការ Telegram Bot សម្រាប់ការឆ្លើយតបអតិថិជន។
-
-2. 💻 **សុខ ពិសិដ្ឋ (CTO):**
-   * បញ្ចប់ការតម្លើង និងធ្វើតេស្តប្រព័ន្ធ API Integration ជាមួយដៃគូក្រៅប្រទេស។
-   * ផ្ទៀងផ្ទាត់ឡើងវិញនូវសុវត្ថិភាពទិន្នន័យ និងពិធីសារ Encryption។
-
-3. 👥 **សាន សុវណ្ណារ៉ា (CEO):**
-   * ពិនិត្យ និងអនុម័តចុងក្រោយលើកញ្ចប់ថវិកាលម្អិតនៅថ្ងៃសុក្រនេះ។`,
-                translate: `### 🇬🇧 English Translation Output:
-
-**Sovanara San (CEO) [00:00]:** Hello everyone! Today we are meeting to discuss our Strategic Plan for Q3 and the launch of our new product campaign.
-**Sreymao Ly (Marketing) [00:15]:** Hello CEO! Regarding our promotional budget, we have finalized the allocation focusing heavily on social media such as TikTok, Facebook, and Kottra AI's new Telegram Bot.
-**Piseth Sok (CTO) [00:32]:** For the tech side, we are currently integrating the API with our partners to ensure users have a smoother and faster experience.
-**Sovanara San (CEO) [00:54]:** Excellent! But keep in mind Piseth, we must ensure customer data privacy is highly secured with a zero retention policy, as promised.
-**Piseth Sok (CTO) [01:12]:** Absolutely, I have configured server-side decryption already; there will be no data leakages.`
-            },
-            meeting_2: {
-                title: "កិច្ចសម្ភាសន៍យុវជនកម្ពុជា.mp3",
-                duration: 120,
-                segments: [
-                    { id: 1, speaker: "សួង ចាន់ត្រា (អ្នកសម្របសម្រួល)", timestamp: "00:00", text: "សួស្តីប្អូនស្រី! ក្នុងនាមជាយុវជនតំណាងម្នាក់ តើប្អូនយល់យ៉ាងណាដែរចំពោះការប្រើប្រាស់បញ្ញាសិប្បនិម្មិតក្នុងពេលបច្ចុប្បន្ន?" },
-                    { id: 2, speaker: "លីដា (និស្សិតសាកលវិទ្យាល័យ)", timestamp: "00:18", text: "ចាសបង! ខ្ញុំគិតថា AI ដូចជា ChatGPT និង កត់ត្រា AI KH នេះគឺជួយបានច្រើនណាស់。ពិសេសគឺការបម្លែងសំឡេងគ្រូបង្រៀនទៅជាអត្ថបទ ជួយឱ្យខ្ញុំមិនបាច់កត់ត្រាច្រើនពេលរៀន。" },
-                    { id: 3, speaker: "សួង ចាន់ត្រា (អ្នកសម្របសម្រួល)", timestamp: "00:44", text: "ពិតជាអស្ចារ្យមែន! តើប្អូនមានបារម្ភពីសុវត្ថិភាពទិន្នន័យនៃការរៀនសូត្រ ឬព័ត៌មានផ្ទាល់ខ្លួនទេ?" },
-                    { id: 4, speaker: "លីដា (និស្សិតសាកលវិទ្យាល័យ)", timestamp: "01:02", text: "បាទបង ពីមុនបារម្ភខ្លាចគេយកសំឡេងយើងទៅប្រើប្រាស់ខុស ប៉ុន្តែឥឡូវកម្មវិធីកត់ត្រា AI KH មាន Zero Retention Policy លុបចោលភ្លាមៗ អញ្ចឹងខ្ញុំមានទំនុកចិត្តខ្លាំងណាស់!" }
-                ],
-                summary: `### 📌 កំណត់ហេតុសង្ខេប៖ កិច្ចសម្ភាសន៍យុវជនកម្ពុជា និងបច្ចេកវិទ្យា AI
-
-**ខ្លឹមសារសង្ខេប៖**
-* **ការយល់ឃើញរបស់យុវជនលើ AI៖** យុវជនយល់ថា AI ផ្តល់ផលប្រយោជន៍ដ៏មហិមាសម្រាប់ការសិក្សា ដោយកាត់បន្ថយពេលវេលាកត់ត្រា និងបង្កើនការយល់ដឹង។
-* **កម្មវិធី កត់ត្រា AI KH៖** ត្រូវបានកោតសរសើរខ្ពស់ក្នុងការបម្លែងសំឡេងបង្រៀនរបស់គ្រូជាភាសាខ្មែរទៅជាអត្ថបទមេរៀនស្វ័យប្រវត្ត។
-* **ទំនុកចិត្តលើសុវត្ថិភាព៖** គោលការណ៍ "Zero Retention Policy" បានជួយកាត់បន្ថយការព្រួយបារម្ភពីការលេចធ្លាយទិន្នន័យសំឡេងផ្ទាល់ខ្លួនយ៉ាងមានប្រសិទ្ធភាព។`,
-                actions: `### 📋 បញ្ជីការងារដែលត្រូវអនុវត្តបន្ត៖
-
-1. 📚 **ផ្នែកអភិវឌ្ឍន៍សហគមន៍សិស្ស-និស្សិត:**
-   * រៀបចំសិក្ខាសាលាណែនាំរបៀបប្រើប្រាស់ប្រព័ន្ធ "កត់ត្រា AI KH" ឥតគិតថ្លៃសម្រាប់និស្សិតសាកលវិទ្យាល័យ។
-   * ចងក្រងមតិកែលម្អបន្ថែមពីសិស្សានុសិស្សដើម្បីអភិវឌ្ឍជំនួយការ AI ក្នុងការសិក្សា។`,
-                translate: `### 🇬🇧 English Translation Output:
-
-**Chantra Suong (Moderator) [00:00]:** Hello! As a representative youth, what is your view on the current usage of artificial intelligence?
-**Lida (University Student) [00:18]:** Hello! I believe AI tools like ChatGPT and Kottra AI KH are extremely helpful. Especially transcribing classroom lectures to text, which saves me from tedious manual note-taking during lectures.
-**Chantra Suong (Moderator) [00:44]:** That's wonderful! Are you worried about the privacy of your learning files or personal data?
-**Lida (University Student) [01:02]:** Yes, initially I was afraid they might misuse our recordings, but now that Kottra AI KH has a Zero Retention Policy that automatically purges files, I feel highly confident!`
-            },
-            meeting_3: {
-                title: "ដោះស្រាយបញ្ហាបច្ចេកទេសផលិតផល.mp3",
-                duration: 95,
-                segments: [
-                    { id: 1, speaker: "អ្នកដឹកនាំបច្ចេកទេស", timestamp: "00:00", text: "សួស្តីក្រុមការងារ! ប្រព័ន្ធ Server របស់យើងកាលពីយប់មិញហាក់បីដូចជាមាន latency ខ្ពស់បន្តិច។ តើមានបញ្ហាអ្វីកើតឡើង?" },
-                    { id: 2, speaker: "វិស្វករប្រព័ន្ធ", timestamp: "00:15", text: "បាទលោកបង! គឺមានការកើនឡើងនូវ traffic ខ្លាំងពីសេវាកម្ម transcribe របស់ User ពេលល្ងាច។ CPU load កើនដល់ ៩០ភាគរយ។" },
-                    { id: 3, speaker: "អ្នកដឹកនាំបច្ចេកទេស", timestamp: "00:35", text: "អូខេ! អញ្ចឹងយើងត្រូវប្រញាប់ឡើង cloud autoscaling ឬបន្ថែម GPU server ដើម្បីកុំឱ្យយឺតយ៉ាវដល់ការប្រើប្រាស់របស់ប្រជាជន។" },
-                    { id: 4, speaker: "វិស្វករប្រព័ន្ធ", timestamp: "00:52", text: "បាទ ខ្ញុំនឹងរៀបចំ autoscaling group ឱ្យរួចរាល់នៅល្ងាចនេះ ដើម្បីឱ្យប្រព័ន្ធរត់បានរលូនឥតគិតថ្លៃជានិច្ច។" }
-                ],
-                summary: `### 📌 កំណត់ហេតុសង្ខេប៖ ដោះស្រាយបញ្ហាបច្ចេកទេស Latency លើ Server
-
-**ចំណុចបញ្ហានិងដំណោះស្រាយ៖**
-1. **បញ្ហា Latency ខ្ពស់៖** ប្រព័ន្ធឆ្លងកាត់ការប្រើប្រាស់កើនឡើងខ្ពស់កាលពីយប់មិញ បណ្តាលឱ្យ CPU Load កើនឡើងដល់ 90%។
-2. **មូលហេតុ៖** ចរាចរណ៍ប្រើប្រាស់សេវាបម្លែងសំឡេង (Transcribe Service) កើនឡើងយ៉ាងគំហុកក្នុងម៉ោងល្ងាច។
-3. **ដំណោះស្រាយបន្ទាន់៖** សម្រេចបញ្ចូលប្រព័ន្ធ Cloud Autoscaling និងបន្ថែមធនធាន GPU Server។`,
-                actions: `### 📋 បញ្ជីការងារដែលត្រូវអនុវត្តបន្ត៖
-
-1. ⚙️ **វិស្វករប្រព័ន្ធ (System Engineer):**
-   * កំណត់រចនាសម្ព័ន្ធ AWS Autoscaling Group ឱ្យរួចរាល់មុនម៉ោង 5:00 ល្ងាច។
-   * តាមដានដំណើរការ CPU និង Memory usage នៅអំឡុងពេលម៉ោងមានអ្នកប្រើច្រើន។
-   * បន្ថែមសមត្ថភាព GPU servers ដើម្បីបំពេញតម្រូវការ Speech-to-Text លឿនរហ័ស។`,
-                translate: `### 🇬🇧 English Translation Output:
-
-**Tech Lead [00:00]:** Hello team! Our server network yesterday evening experienced high latency. What was the cause?
-**System Engineer [00:15]:** Hello sir! We had a massive traffic spike from users accessing the transcription service in the evening. CPU load peaked at 90%.
-**Tech Lead [00:35]:** Understood! We must immediately scale our cloud automatically or provision more GPU servers to avoid slowing down free usage for people.
-**System Engineer [00:52]:** Yes, I will set up the autoscaling group by this evening to ensure the system runs smoothly and free of charge.`
-            }
-        };
-
-        // Navigation Function
-        function navigateTo(pageId) {
-            const homePage = document.getElementById('home-page');
-            const workspacePage = document.getElementById('workspace-page');
-            const nav = document.querySelector('nav');
-
-            if (pageId === 'workspace') {
-                homePage.classList.add('hidden');
-                workspacePage.classList.remove('hidden');
-                // Auto Scroll to Top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (mode === 'record') {
+                btnRecord.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-cyan-600 text-white transition";
+                btnUpload.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-slate-800 text-gray-300 hover:bg-slate-700 transition";
+                containerRecord.classList.remove('hidden');
+                containerUpload.classList.add('hidden');
             } else {
-                workspacePage.classList.add('hidden');
-                homePage.classList.remove('hidden');
+                btnUpload.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-cyan-600 text-white transition";
+                btnRecord.className = "flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-semibold bg-slate-800 text-gray-300 hover:bg-slate-700 transition";
+                containerUpload.classList.remove('hidden');
+                containerRecord.classList.add('hidden');
             }
         }
 
-        // Trigger Audio File Input
-        function triggerFileInput() {
-            document.getElementById('audio-file-input').click();
+        // Custom Modal Control
+        function showModal(title, body) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerText = body;
+            document.getElementById('custom-modal').classList.remove('hidden');
         }
 
-        // Handle Audio Upload with simulated progress loading
-        function handleAudioUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            showProcessingOverlay(file.name);
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
         }
 
-        // Show Processing Overlay with steps
-        function showProcessingOverlay(filename) {
-            const overlay = document.getElementById('processing-overlay');
-            const progressBar = document.getElementById('processing-bar');
-            const stageText = document.getElementById('processing-stage-text');
-            const percentText = document.getElementById('processing-percent');
+        // Dropdown Control
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const isHidden = dropdown.classList.contains('hidden');
             
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
-
-            let progress = 0;
-            const stages = [
-                "ដំណាក់កាលទី ១៖ ស្រង់ទិន្នន័យសំឡេង និងវិភាគរលកសំឡេង...",
-                "ដំណាក់កាលទី ២៖ កំណត់អត្តសញ្ញាណអ្នកនិយាយ (Speaker Identification)...",
-                "ដំណាក់កាលទី ៣៖ បម្លែងសំឡេងខ្មែរទៅជាអត្ថបទ (Speech-to-Text Conversion)...",
-                "ដំណាក់កាលទី ៤៖ សំអាតពាក្យរអាក់រអួល និងបង្កើតត្រាពេលវេលា..."
-            ];
-
-            const interval = setInterval(() => {
-                progress += 5;
-                progressBar.style.width = `${progress}%`;
-                percentText.innerText = `${progress}%`;
-
-                // Update stage text dynamically
-                if (progress < 25) {
-                    stageText.innerText = stages[0];
-                } else if (progress < 55) {
-                    stageText.innerText = stages[1];
-                } else if (progress < 85) {
-                    stageText.innerText = stages[2];
-                } else {
-                    stageText.innerText = stages[3];
-                }
-
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        overlay.classList.add('hidden');
-                        overlay.classList.remove('flex');
-                        
-                        // Load demo contents as mock result of upload
-                        loadDemoContent('meeting_1', filename);
-                        showNotification("ការវិភាគជោគជ័យ", "អត្ថបទសំឡេងរបស់អ្នកត្រូវបានបម្លែង និងសង្ខេបដោយម៉ាស៊ីន AI ជោគជ័យ!", "success");
-                    }, 500);
-                }
-            }, 150);
-        }
-
-        // Load Demo Content into the workspace editor
-        function loadDemoContent(key, customName = null) {
-            const emptyState = document.getElementById('editor-empty-state');
-            const segmentsContainer = document.getElementById('transcription-segments');
-            const audioPanel = document.getElementById('audio-panel');
+            // Hide all dropdowns first
+            document.querySelectorAll('[id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
             
-            if (!key) {
-                // Clear and show empty state
-                emptyState.classList.remove('hidden');
-                segmentsContainer.classList.add('hidden');
-                audioPanel.classList.add('hidden');
-                return;
-            }
-
-            const data = demoData[key];
-            if (!data) return;
-
-            // Prepare UI state
-            emptyState.classList.add('hidden');
-            segmentsContainer.classList.remove('hidden');
-            audioPanel.classList.remove('hidden');
-
-            // Set Audio Panel info
-            document.getElementById('audio-file-title').innerText = customName || data.title;
-            audioDuration = data.duration;
-            audioCurrentTime = 0;
-            updateAudioTimeUI();
-
-            // Store segments locally
-            currentSegments = JSON.parse(JSON.stringify(data.segments));
-            renderSegments();
-
-            // Load AI Tabs data
-            document.getElementById('ai-summary-output').innerHTML = formatMarkdown(data.summary);
-            document.getElementById('ai-actions-output').innerHTML = formatMarkdown(data.actions);
-            document.getElementById('ai-translate-output').innerHTML = formatMarkdown(data.translate);
-
-            // Start Audio Visualizer canvas loop
-            initVisualizer();
-            
-            // Clean dropdown selection
-            document.getElementById('demo-selector').value = key;
-        }
-
-        // Render Segments into DOM
-        function renderSegments() {
-            const container = document.getElementById('transcription-segments');
-            container.innerHTML = '';
-            
-            document.getElementById('segment-count').innerText = `${currentSegments.length} កថាខណ្ឌ`;
-
-            currentSegments.forEach((seg, idx) => {
-                const segmentEl = document.createElement('div');
-                segmentEl.className = "p-4 sm:p-5 rounded-2xl bg-brand-card/70 border border-white/5 hover:border-white/10 transition-all space-y-3 relative group";
-                segmentEl.innerHTML = `
-                    <div class="flex items-center justify-between flex-wrap gap-2">
-                        <div class="flex items-center gap-2">
-                            <!-- Speaker Tag editable -->
-                            <input type="text" value="${seg.speaker}" onchange="updateSpeaker(${idx}, this.value)" class="bg-white/5 hover:bg-white/10 text-white font-semibold text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:bg-brand-600 transition-colors max-w-[150px]">
-                            <!-- Timestamp button play -->
-                            <button onclick="playAtTimestamp(${idx})" class="inline-flex items-center gap-1 text-[11px] bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-300 font-medium px-2 py-1 rounded-md transition-colors">
-                                <i class="fa-solid fa-play text-[9px]"></i> ${seg.timestamp}
-                            </button>
-                        </div>
-                        <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="deleteSegment(${idx})" class="text-rose-400 hover:text-rose-300 text-xs p-1" title="លុបកថាខណ្ឌ"><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                    <!-- Transcribed Speech editable content -->
-                    <textarea oninput="updateText(${idx}, this.value)" rows="2" class="w-full bg-transparent text-gray-200 text-xs sm:text-sm leading-relaxed border-0 focus:ring-0 focus:outline-none resize-none">${seg.text}</textarea>
-                `;
-                container.appendChild(segmentEl);
-            });
-        }
-
-        // Web Speech API Recording Integration
-        function toggleRecording() {
-            if (isRecording) {
-                stopSpeechRecognition();
-            } else {
-                startSpeechRecognition();
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
             }
         }
 
-        function startSpeechRecognition() {
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                showNotification("ប្រព័ន្ធមិនគាំទ្រ", "កម្មវិធីរុករក (Browser) របស់អ្នកមិនគាំទ្រ Speech Recognition ទេ។ សូមសាកល្បងជាមួយ Google Chrome ឬ Microsoft Edge!", "warning");
-                return;
-            }
-
-            recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = 'km-KH'; // Default to Khmer
-
-            isRecording = true;
-            document.getElementById('record-btn').className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-rose-700 text-white px-5 py-3 rounded-xl text-xs font-semibold animate-pulse shadow-lg";
-            document.getElementById('record-btn-text').innerText = "កំពុងថត... (ចុចដើម្បីបញ្ឈប់)";
-
-            // Show audio visualizer and audio panel
-            document.getElementById('editor-empty-state').classList.add('hidden');
-            const segmentsContainer = document.getElementById('transcription-segments');
-            segmentsContainer.classList.remove('hidden');
-            
-            document.getElementById('audio-panel').classList.remove('hidden');
-            document.getElementById('audio-file-title').innerText = "ការថតសំឡេងបន្តផ្ទាល់ (Live Microphone)";
-            audioDuration = 0;
-            audioCurrentTime = 0;
-            updateAudioTimeUI();
-            initVisualizer();
-
-            // Create temporary segment for stream
-            let currentSegmentIndex = currentSegments.length;
-            currentSegments.push({
-                id: currentSegmentIndex + 1,
-                speaker: "វាគ្មិន (មីក្រូហ្វូន)",
-                timestamp: "00:00",
-                text: "កំពុងរង់ចាំសំឡេងរបស់អ្នក..."
-            });
-            renderSegments();
-
-            recognition.onresult = function(event) {
-                let finalTranscript = '';
-                let interimTranscript = '';
-
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        finalTranscript += event.results[i][0].transcript;
-                    } else {
-                        interimTranscript += event.results[i][0].transcript;
-                    }
-                }
-
-                if (finalTranscript || interimTranscript) {
-                    const activeText = finalTranscript || interimTranscript;
-                    currentSegments[currentSegmentIndex].text = activeText;
-                    renderSegments();
-                }
-            };
-
-            recognition.onerror = function(event) {
-                console.error("Speech error", event.error);
-                if (event.error === 'not-allowed') {
-                    showNotification("គ្មានការអនុញ្ញាត", "សូមបើកសិទ្ធិប្រើប្រាស់មីក្រូហ្វូនក្នុងកម្មវិធីរបស់អ្នក!", "warning");
-                    stopSpeechRecognition();
-                }
-            };
-
-            recognition.onend = function() {
-                stopSpeechRecognition();
-            };
-
-            recognition.start();
-        }
-
-        function stopSpeechRecognition() {
-            if (!isRecording) return;
-            isRecording = false;
-            if (recognition) {
-                recognition.stop();
-            }
-            document.getElementById('record-btn').className = "flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-500 text-white px-5 py-3 rounded-xl text-xs font-semibold transition-colors shadow-md";
-            document.getElementById('record-btn-text').innerText = "ថតសំឡេងផ្ទាល់";
-
-            // Process with AI Summary instantly after live recording session
-            generateAISummary();
-        }
-
-        // Editing utilities
-        function updateSpeaker(index, val) {
-            currentSegments[index].speaker = val;
-        }
-
-        function updateText(index, val) {
-            currentSegments[index].text = val;
-        }
-
-        function playAtTimestamp(index) {
-            // Convert simulated playhead to match timestamp
-            const seg = currentSegments[index];
-            const parts = seg.timestamp.split(':');
-            const seconds = parseInt(parts[0]) * 60 + parseInt(parts[1]);
-            audioCurrentTime = seconds;
-            updateAudioTimeUI();
-            
-            showNotification("ចាក់សំឡេង", `ចាក់សំឡេងផ្ដើមពី ${seg.timestamp} ជាមួយ ${seg.speaker}`, "info");
-        }
-
-        // Delete segment
-        function deleteSegment(index) {
-            currentSegments.splice(index, 1);
-            renderSegments();
-        }
-
-        function addNewSegment() {
-            const emptyState = document.getElementById('editor-empty-state');
-            emptyState.classList.add('hidden');
-            document.getElementById('transcription-segments').classList.remove('hidden');
-
-            const lastSeg = currentSegments[currentSegments.length - 1];
-            const newTime = lastSeg ? incrementTimestamp(lastSeg.timestamp) : "00:00";
-
-            currentSegments.push({
-                id: currentSegments.length + 1,
-                speaker: `វាគ្មិនថ្មី`,
-                timestamp: newTime,
-                text: "ចុចពីរដងដើម្បីសរសេរ ឬកែសម្រួលអត្ថបទប្រជុំ..."
-            });
-            renderSegments();
-        }
-
-        function incrementTimestamp(timeStr) {
-            const parts = timeStr.split(':');
-            let mins = parseInt(parts[0]);
-            let secs = parseInt(parts[1]) + 15;
-            if (secs >= 60) {
-                mins += 1;
-                secs = secs % 60;
-            }
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        // Toggle clean up stuttering (Simulating Kottra AI's feature of smart text enhancement)
-        function toggleCleanTranscript() {
-            isCleanMode = !isCleanMode;
-            const btn = document.getElementById('clean-mode-btn');
-            
-            if (isCleanMode) {
-                btn.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-emerald-500/20 border border-emerald-500 text-emerald-300 hover:bg-emerald-500/30 transition-all font-medium";
-                btn.querySelector('span').innerText = "អត្ថបទសម្អាតរួច";
-                
-                // Perform mock cleanup
-                currentSegments.forEach(seg => {
-                    seg.text = seg.text
-                        .replace(/(?:បាទ|ចាស|អឺ|អូខេ)\s*,\s*(?:បាទ|ចាស|អឺ|អូខេ)/gi, "$1")
-                        .replace(/(Strategic plan)\s+(Strategic plan)/gi, "$1")
-                        .replace(/( Promotion)\s+( Promotion)/gi, "$1");
-                });
-                renderSegments();
-                showNotification("សម្អាតអក្សរជោគជ័យ", "អក្សរស្ទួន ស្អាក់ស្អើ និងពាក្យដដែលៗត្រូវបានដកចេញដោយជោគជ័យ!", "success");
-            } else {
-                btn.className = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs bg-brand-500/10 border border-brand-500/20 text-brand-300 hover:bg-brand-500/20 transition-all font-medium";
-                btn.querySelector('span').innerText = "កែសម្រួលអក្សរស្ទួន";
-                // Restore demo
-                const activeDemo = document.getElementById('demo-selector').value;
-                if (activeDemo) loadDemoContent(activeDemo);
-            }
-        }
-
-        // Simple Audio visualizer animation with canvas sine waves
-        let canvas, ctx, animId;
-        function initVisualizer() {
-            canvas = document.getElementById('visualizer-canvas');
-            if (!canvas) return;
-            ctx = canvas.getContext('2d');
-            
-            // Resize canvas to parent width
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-
-            if (animId) cancelAnimationFrame(animId);
-            animateVisualizer();
-        }
-
-        function animateVisualizer() {
-            animId = requestAnimationFrame(animateVisualizer);
-            
-            ctx.fillStyle = 'rgba(11, 10, 26, 0.3)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            const numLines = 60;
-            const step = canvas.width / numLines;
-            
-            ctx.beginPath();
-            ctx.strokeStyle = '#6366f1';
-            ctx.lineWidth = 2.5;
-            
-            for (let i = 0; i < numLines; i++) {
-                // Generate dynamic height based on audio playing
-                let amplitude = audioPlaying || isRecording ? Math.sin(Date.now() * 0.005 + i * 0.1) * 15 + 15 : 2;
-                if (isRecording) {
-                    amplitude = Math.random() * 20 + 5; // Make it look active
-                }
-                const x = i * step + step/2;
-                const y1 = canvas.height/2 - amplitude;
-                const y2 = canvas.height/2 + amplitude;
-                
-                ctx.moveTo(x, y1);
-                ctx.lineTo(x, y2);
-            }
-            ctx.stroke();
-        }
-
-        // Play/Pause Audio Sim
-        function togglePlayAudio() {
-            const playBtn = document.getElementById('player-play-btn');
-            audioPlaying = !audioPlaying;
-
-            if (audioPlaying) {
-                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                audioTimer = setInterval(() => {
-                    audioCurrentTime++;
-                    if (audioCurrentTime >= audioDuration) {
-                        clearInterval(audioTimer);
-                        audioPlaying = false;
-                        playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                        audioCurrentTime = 0;
-                    }
-                    updateAudioTimeUI();
-                }, 1000);
-            } else {
-                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-                clearInterval(audioTimer);
-            }
-        }
-
-        function updateAudioTimeUI() {
-            document.getElementById('audio-time-current').innerText = formatTime(audioCurrentTime);
-            document.getElementById('audio-time-duration').innerText = formatTime(audioDuration);
-        }
-
-        function formatTime(seconds) {
-            const m = Math.floor(seconds / 60);
-            const s = seconds % 60;
-            return `${m}:${s.toString().padStart(2, '0')}`;
-        }
-
-        function closeAudioPanel() {
-            document.getElementById('audio-panel').classList.add('hidden');
-            if (audioTimer) clearInterval(audioTimer);
-            audioPlaying = false;
-            document.getElementById('player-play-btn').innerHTML = '<i class="fa-solid fa-play"></i>';
-        }
-
-        // AI Sidepanel Tab Controls
-        function switchAITab(tabId) {
-            activeTab = tabId;
-            const tabs = ['summary', 'actions', 'translate', 'chat'];
-            
-            tabs.forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                const content = document.getElementById(`content-${t}`);
-                
-                if (t === tabId) {
-                    btn.className = "py-3.5 text-xs font-semibold border-b-2 border-brand-500 text-white transition-all flex flex-col items-center gap-1";
-                    content.classList.remove('hidden');
-                } else {
-                    btn.className = "py-3.5 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex flex-col items-center gap-1";
-                    content.classList.add('hidden');
-                }
-            });
-        }
-
-        // Generate dynamically AI Summary based on current text segments
-        function generateAISummary() {
-            if (currentSegments.length === 0) {
-                showNotification("ត្រូវការអត្ថបទប្រជុំ", "សូមបញ្ចូលឯកសារសំឡេង ឬថតជាមុនសិន។", "warning");
-                return;
-            }
-            
-            const output = document.getElementById('ai-summary-output');
-            output.innerHTML = `
-                <div class="flex items-center gap-2 justify-center py-10">
-                    <i class="fa-solid fa-circle-notch animate-spin text-indigo-400 text-xl"></i>
-                    <span class="text-xs text-gray-400">កំពុងវិភាគបង្កើតរបាយការណ៍ថ្មី...</span>
-                </div>
-            `;
-
-            setTimeout(() => {
-                // Return structured response
-                output.innerHTML = formatMarkdown(`
-### 📌 កំណត់ហេតុសង្ខេប៖ កិច្ចពិភាក្សាថ្មីបំផុត
-
-**ខ្លឹមសាររួម៖**
-* វាគ្មិនបានលើកឡើងពីដំណើរការងារ និងការអភិវឌ្ឍប្រព័ន្ធថ្មី។
-* ផ្តោតខ្លាំងលើការសម្របសម្រួល និងសម្រេចកិច្ចការងារឱ្យបានរហ័ស។
-
-**សេចក្តីសន្និដ្ឋាន៖**
-* រក្សាសុវត្ថិភាពការងារ និងធានាថាអ្នកប្រើប្រាស់អាចទទួលបានសេវាឥតគិតថ្លៃ។
-                `);
-                showNotification("បង្កើតរបាយការណ៍ថ្មី", "កំណត់ហេតុប្រជុំត្រូវបានបង្កើតឡើងវិញដោយជោគជ័យ!", "success");
-            }, 1500);
-        }
-
-        function generateAIActions() {
-            if (currentSegments.length === 0) return;
-            const output = document.getElementById('ai-actions-output');
-            output.innerHTML = `
-                <div class="flex items-center gap-2 justify-center py-10">
-                    <i class="fa-solid fa-circle-notch animate-spin text-indigo-400 text-xl"></i>
-                    <span class="text-xs text-gray-400">កំពុងចម្រាញ់ការងារ...</span>
-                </div>
-            `;
-            setTimeout(() => {
-                output.innerHTML = formatMarkdown(`
-### 📋 ការងារដែលត្រូវធ្វើបន្ទាប់៖
-
-1. ⚙️ **ក្រុមបច្ចេកទេស៖**
-   * បន្តតាមដាន performance នៃប្រព័ន្ធ និងធានាថាគ្មានភាពយឺតយ៉ាវ។
-2. 📢 **ក្រុមទីផ្សារ៖**
-   * រៀបចំយុទ្ធនាការផ្តល់ព័ត៌មានដល់ប្រជាជនខ្មែរពីការប្រើប្រាស់ "កត់ត្រា AI KH" ឥតគិតថ្លៃ។
-                `);
-            }, 1200);
-        }
-
-        function translateTranscript(lang) {
-            if (currentSegments.length === 0) return;
-            const output = document.getElementById('ai-translate-output');
-            
-            if (lang === 'en') {
-                output.innerHTML = `
-                    <div class="flex items-center gap-2 justify-center py-10">
-                        <i class="fa-solid fa-circle-notch animate-spin text-indigo-400 text-xl"></i>
-                        <span class="text-xs text-gray-400">Translating to English...</span>
-                    </div>
-                `;
-                setTimeout(() => {
-                    output.innerHTML = formatMarkdown(`
-### 🇬🇧 English Translation:
-* The speakers successfully launched the project and reviewed immediate actions.
-* They focused heavily on scaling the technology platform and ensuring customer privacy.
-                    `);
-                    showNotification("Translated", "Transcription translated to English!", "success");
-                }, 1000);
-            } else {
-                // Khmer
-                const activeDemo = document.getElementById('demo-selector').value;
-                if (activeDemo) {
-                    output.innerHTML = formatMarkdown(demoData[activeDemo].translate);
-                }
-            }
-        }
-
-        // Send Chat Messages to Kottra Copilot
-        function sendChatMessage() {
-            const input = document.getElementById('chat-user-input');
-            const query = input.value.trim();
-            if (!query) return;
-
-            const container = document.getElementById('chat-messages-container');
-            
-            // Append User Message
-            const userMsg = document.createElement('div');
-            userMsg.className = "flex gap-2.5 items-start justify-end";
-            userMsg.innerHTML = `
-                <div class="bg-brand-500/10 p-3.5 rounded-2xl text-xs leading-relaxed max-w-[85%] text-gray-200 border border-brand-500/15">
-                    <p class="font-semibold text-brand-400 mb-1">អ្នកប្រើប្រាស់</p>
-                    ${query}
-                </div>
-            `;
-            container.appendChild(userMsg);
-            input.value = '';
-            
-            // Auto scroll chat
-            container.scrollTop = container.scrollHeight;
-
-            // Simulated AI Response
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = "flex gap-2.5 items-start";
-                aiMsg.innerHTML = `
-                    <div class="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-sparkles text-[11px] text-white"></i>
-                    </div>
-                    <div class="bg-white/5 p-3.5 rounded-2xl text-xs leading-relaxed max-w-[85%]">
-                        <p class="font-semibold text-white mb-1">កត់ត្រា AI KH Assistant</p>
-                        ផ្អែកលើការវិភាគកិច្ចពិភាក្សាខាងលើ ខ្ញុំសូមបញ្ជាក់ថាចំណុចដែលអ្នកសួរគឺពិតជាត្រូវបានលើកឡើងយ៉ាងយកចិត្តទុកដាក់ដោយវាគ្មិន។ តើមានចំណុចណាផ្សេងទៀតដែលខ្ញុំអាចជួយរៀបចំរបាយការណ៍បន្ថែមជូនទេបាទ?
-                    </div>
-                `;
-                container.appendChild(aiMsg);
-                container.scrollTop = container.scrollHeight;
-            }, 1200);
-        }
-
-        // Listen to Enter Key in Chat
-        document.getElementById('chat-user-input')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendChatMessage();
-            }
-        });
-
-        // Toggle Export Menu
-        function toggleExportMenu() {
-            const el = document.getElementById('export-dropdown');
-            el.classList.toggle('hidden');
-        }
-
-        // Close dropdown when clicking outside
+        // Close dropdowns when clicking outside
         window.addEventListener('click', function(e) {
-            const el = document.getElementById('export-dropdown');
-            const trigger = document.querySelector('[onclick="toggleExportMenu()"]');
-            if (el && !el.contains(e.target) && !trigger.contains(e.target)) {
-                el.classList.add('hidden');
+            if (!e.target.closest('.relative')) {
+                document.querySelectorAll('[id$="-dropdown"]').forEach(el => el.classList.add('hidden'));
             }
         });
 
-        // Mock Export Functionality
-        function exportToFormat(format) {
-            if (currentSegments.length === 0) {
-                showNotification("គ្មានទិន្នន័យ", "សូមបញ្ចូលឯកសារ ឬជ្រើសរើសគំរូប្រជុំមុនពេលទាញយក!", "warning");
+        // Timer Utilities
+        function startTimer() {
+            recordingSeconds = 0;
+            const timerEl = document.getElementById('timer');
+            timerEl.classList.remove('hidden');
+            timerEl.innerText = "00:00";
+            
+            recordingTimer = setInterval(() => {
+                recordingSeconds++;
+                const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+                const secs = String(recordingSeconds % 60).padStart(2, '0');
+                timerEl.innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        // Stop timer
+        function stopTimer() {
+            clearInterval(recordingTimer);
+            document.getElementById('timer').classList.add('hidden');
+        }
+
+        // Toggle Sound Recording Process
+        async function toggleRecording() {
+            if (!isRecording) {
+                // Start Recording
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    showModal("កំហុសឧបករណ៍", "កម្មវិធីរុករក (Browser) របស់អ្នកមិនគាំទ្រ ឬមិនទាន់អនុញ្ញាតឱ្យប្រើប្រាស់មីក្រូហ្វូនឡើយ។");
+                    return;
+                }
+
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                        const audioUrl = URL.createObjectURL(audioBlob);
+                        document.getElementById('audio-player').src = audioUrl;
+                        document.getElementById('audio-preview-container').classList.remove('hidden');
+                        
+                        // Process with Gemini AI automatically after recording finishes
+                        processAudio(audioBlob);
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    
+                    // UI State Update
+                    document.getElementById('visualizer-circle').classList.add('animate-pulse-custom', 'bg-red-500/10', 'border-red-500/40');
+                    document.getElementById('status-indicator').className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                    document.getElementById('status-text').innerText = "កំពុងកត់ត្រាសំឡេង...";
+                    document.getElementById('btn-action-record').className = "w-full py-3 px-6 bg-red-500 hover:bg-red-400 text-white font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2";
+                    document.getElementById('btn-action-record').innerHTML = '<i data-lucide="square" class="w-5 h-5 fill-current"></i><span>បញ្ឈប់ការកត់ត្រា</span>';
+                    lucide.createIcons();
+
+                    startTimer();
+                } catch (err) {
+                    showModal("កំហុសការតភ្ជាប់", "មិនអាចភ្ជាប់ទៅកាន់មីក្រូហ្វូនរបស់អ្នកបានឡើយ៖ " + err.message);
+                }
+            } else {
+                // Stop Recording
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+
+                // Reset UI State
+                document.getElementById('visualizer-circle').classList.remove('animate-pulse-custom', 'bg-red-500/10', 'border-red-500/40');
+                document.getElementById('status-indicator').className = "w-2.5 h-2.5 rounded-full bg-gray-500";
+                document.getElementById('status-text').innerText = "ឧបករណ៍រួចរាល់";
+                document.getElementById('btn-action-record').className = "w-full py-3 px-6 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl shadow-lg transition flex items-center justify-center gap-2";
+                document.getElementById('btn-action-record').innerHTML = '<i data-lucide="play" class="w-5 h-5 fill-current"></i><span>ចាប់ផ្ដើមកត់ត្រា</span>';
+                lucide.createIcons();
+
+                stopTimer();
+            }
+        }
+
+        // File Drag & Drop Handlers
+        const dropZone = document.getElementById('drop-zone');
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-cyan-400', 'bg-slate-900/60');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/60');
+        });
+
+        dropZone.addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                processFileSelection(files[0]);
+            }
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            dropZone.classList.remove('border-cyan-400', 'bg-slate-900/60');
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('audio/')) {
+                processFileSelection(files[0]);
+            } else {
+                showModal("ទម្រង់ឯកសារមិនត្រឹមត្រូវ", "សូមជ្រើសរើសតែប្រភេទឯកសារសំឡេងតែប៉ុណ្ណោះ (MP3, WAV, M4A...)។");
+            }
+        }
+
+        function processFileSelection(file) {
+            // No strict 20MB file size limit now!
+            selectedFile = file;
+            document.getElementById('file-name').innerText = file.name + ` (${(file.size / (1024 * 1024)).toFixed(1)} MB)`;
+            document.getElementById('file-info').classList.remove('hidden');
+            
+            // Enable Process button
+            const processBtn = document.getElementById('btn-process-file');
+            processBtn.disabled = false;
+            processBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            processBtn.classList.add('bg-cyan-500', 'text-slate-950', 'hover:bg-cyan-400');
+
+            // Setup preview
+            const audioUrl = URL.createObjectURL(file);
+            document.getElementById('audio-player').src = audioUrl;
+            document.getElementById('audio-preview-container').classList.remove('hidden');
+        }
+
+        function clearSelectedFile() {
+            selectedFile = null;
+            document.getElementById('file-info').classList.add('hidden');
+            document.getElementById('file-input').value = '';
+            document.getElementById('audio-preview-container').classList.add('hidden');
+            
+            const processBtn = document.getElementById('btn-process-file');
+            processBtn.disabled = true;
+            processBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            processBtn.classList.remove('bg-cyan-500', 'text-slate-950', 'hover:bg-cyan-400');
+        }
+
+        function processUploadedFile() {
+            if (!selectedFile) return;
+            processAudio(selectedFile);
+        }
+
+        // Helper: Slice Audio Buffer into multiple smaller chunks (e.g. 180 seconds each)
+        function sliceAudioBuffer(audioBuffer, startSeconds, durationSeconds) {
+            const sampleRate = audioBuffer.sampleRate;
+            const startOffset = Math.floor(startSeconds * sampleRate);
+            const endOffset = Math.floor(Math.min((startSeconds + durationSeconds) * sampleRate, audioBuffer.length));
+            const frameCount = endOffset - startOffset;
+            
+            if (frameCount <= 0) return null;
+            
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const newBuffer = ctx.createBuffer(audioBuffer.numberOfChannels, frameCount, sampleRate);
+            
+            for (let channel = 0; channel < audioBuffer.numberOfChannels; channel++) {
+                const channelData = audioBuffer.getChannelData(channel);
+                const subData = channelData.subarray(startOffset, endOffset);
+                newBuffer.copyToChannel(subData, channel);
+            }
+            
+            return newBuffer;
+        }
+
+        // Helper: Convert Audio Buffer to WAV format Blob
+        function bufferToWav(buffer) {
+            let numOfChan = buffer.numberOfChannels,
+                sampleRate = buffer.sampleRate,
+                format = 1, // PCM
+                bitDepth = 16,
+                result;
+            
+            let resultBuffer;
+            if (numOfChan === 2) {
+                resultBuffer = interleave(buffer.getChannelData(0), buffer.getChannelData(1));
+            } else {
+                resultBuffer = buffer.getChannelData(0);
+            }
+            
+            let bufferArr = new ArrayBuffer(44 + resultBuffer.length * 2);
+            let view = new DataView(bufferArr);
+            
+            /* RIFF identifier */
+            writeString(view, 0, 'RIFF');
+            /* file length */
+            view.setUint32(4, 36 + resultBuffer.length * 2, true);
+            /* RIFF type */
+            writeString(view, 8, 'WAVE');
+            /* format chunk identifier */
+            writeString(view, 12, 'fmt ');
+            /* format chunk length */
+            view.setUint32(16, 16, true);
+            /* sample format (raw) */
+            view.setUint16(20, format, true);
+            /* channel count */
+            view.setUint16(22, numOfChan, true);
+            /* sample rate */
+            view.setUint32(24, sampleRate, true);
+            /* byte rate (sample rate * block align) */
+            view.setUint32(28, sampleRate * numOfChan * 2, true);
+            /* block align (channel count * bytes per sample) */
+            view.setUint16(32, numOfChan * 2, true);
+            /* bits per sample */
+            view.setUint16(34, bitDepth, true);
+            /* data chunk identifier */
+            writeString(view, 36, 'data');
+            /* data chunk length */
+            view.setUint32(40, resultBuffer.length * 2, true);
+            
+            floatTo16BitPCM(view, 44, resultBuffer);
+            
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function interleave(inputL, inputR) {
+            let length = inputL.length + inputR.length;
+            let result = new Float32Array(length);
+            let index = 0, inputIndex = 0;
+            while (index < length) {
+                result[index++] = inputL[inputIndex];
+                result[index++] = inputR[inputIndex];
+                inputIndex++;
+            }
+            return result;
+        }
+
+        function floatTo16BitPCM(output, offset, input) {
+            for (let i = 0; i < input.length; i++, offset += 2) {
+                let s = Math.max(-1, Math.min(1, input[i]));
+                output.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            }
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+
+        // Main Audio Processing function (Supports files of any size through automatic slicing)
+        async function processAudio(audioSourceBlob) {
+            const transcribeLoading = document.getElementById('transcribe-loading');
+            const transcriptionOutput = document.getElementById('transcription-output');
+            const statusTitle = document.getElementById('transcribe-status-title');
+            const statusDetail = document.getElementById('transcribe-status-detail');
+            const progressBarContainer = document.getElementById('progress-bar-container');
+            const progressBarFill = document.getElementById('progress-bar-fill');
+            const progressText = document.getElementById('progress-text');
+
+            // Hide download containers before processing
+            document.getElementById('transcription-export-container').classList.add('hidden');
+            document.getElementById('report-export-container').classList.add('hidden');
+
+            transcribeLoading.classList.remove('hidden');
+            transcriptionOutput.classList.add('hidden');
+            
+            // Manage Report UI
+            const selectTemplate = document.getElementById('select-template').value;
+            const reportCard = document.getElementById('report-card');
+            const reportLoading = document.getElementById('report-loading');
+            const reportOutput = document.getElementById('report-output');
+
+            if (selectTemplate !== 'none') {
+                reportCard.classList.remove('hidden');
+                reportLoading.classList.remove('hidden');
+                reportOutput.classList.add('hidden');
+            } else {
+                reportCard.classList.add('hidden');
+            }
+
+            statusTitle.innerText = "កំពុងអាន និងវិភាគឯកសារសំឡេង...";
+            statusDetail.innerText = "កំពុងបំប្លែងឯកសារសំឡេងទៅជាប្រព័ន្ធរលកសំឡេង الرقمية...";
+            progressBarContainer.classList.add('hidden');
+            progressText.classList.add('hidden');
+
+            try {
+                // Initialize Web Audio Context to Decode any size audio file
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const arrayBuffer = await audioSourceBlob.arrayBuffer();
+                
+                statusTitle.innerText = "កំពុងឌិកូដសំឡេង (Decoding Audio)...";
+                statusDetail.innerText = "ដំណើរការនេះអាចប្រើពេលបន្តិចបន្តួចអាស្រ័យលើទំហំនិងប្រវែងសំឡេង";
+                
+                const decodedBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+                const totalDuration = decodedBuffer.duration; // in seconds
+                
+                // Define Slicing Configuration (e.g. 180 seconds / 3 minutes per chunk)
+                const chunkSizeLimit = 180; 
+                const totalChunks = Math.ceil(totalDuration / chunkSizeLimit);
+                
+                progressBarContainer.classList.remove('hidden');
+                progressText.classList.remove('hidden');
+                
+                let combinedTranscribedText = "";
+
+                // Sequentially process each audio chunk
+                for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+                    const startSec = chunkIndex * chunkSizeLimit;
+                    const progressPercent = Math.round((chunkIndex / totalChunks) * 100);
+                    
+                    statusTitle.innerText = `កំពុងកត់ត្រា៖ ផ្នែកទី ${chunkIndex + 1} នៃ ${totalChunks}...`;
+                    statusDetail.innerText = `កំពុងវិភាគរលកសំឡេងពីវិនាទីទី ${Math.round(startSec)} ដល់ ${Math.round(Math.min(startSec + chunkSizeLimit, totalDuration))} វិនាទី`;
+                    progressBarFill.style.width = `${progressPercent}%`;
+                    progressText.innerText = `${progressPercent}%`;
+
+                    // Slice audio buffer
+                    const slicedBuffer = sliceAudioBuffer(decodedBuffer, startSec, chunkSizeLimit);
+                    if (!slicedBuffer) continue;
+
+                    // Convert slice to WAV blob
+                    const wavBlob = bufferToWav(slicedBuffer);
+                    const chunkBase64 = await new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(wavBlob);
+                        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                    });
+
+                    // Target Language Instruction setup
+                    const targetLanguage = document.getElementById('select-lang').value;
+                    let systemPrompt = "You are a highly precise audio transcription expert. " +
+                                      "Your primary task is to transcribe the audio content exactly as spoken. " +
+                                      "Do not summarize, embellish, or add any extra content. " +
+                                      "Provide a direct word-for-word translation/transcription.";
+
+                    if (targetLanguage !== 'khmer') {
+                        systemPrompt += ` Translate the transcribed text directly and accurately into ${targetLanguage} language. Keep the original style.`;
+                    } else {
+                        systemPrompt += " Output strictly in Khmer matching the spoken words.";
+                    }
+
+                    const payload = {
+                        contents: [
+                            {
+                                parts: [
+                                    { text: "Transcribe this audio slice precisely. Keep all details intact." },
+                                    {
+                                        inlineData: {
+                                            mimeType: "audio/wav",
+                                            data: chunkBase64
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        }
+                    };
+
+                    // Send chunk to Gemini
+                    const chunkText = await callGeminiWithRetry(payload);
+                    if (chunkText) {
+                        combinedTranscribedText += chunkText + "\n";
+                    }
+                }
+
+                // Complete progress display
+                progressBarFill.style.width = `100%`;
+                progressText.innerText = `100%`;
+
+                // Display final transcription
+                transcribeLoading.classList.add('hidden');
+                transcriptionOutput.classList.remove('hidden');
+                transcriptionOutput.innerText = combinedTranscribedText.trim() || "មិនអាចបំប្លែងខ្លឹមសារសំឡេងបានឡើយ។ សូមព្យាយាមម្ដងទៀត។";
+                
+                // Show Download Button for Transcription
+                if (combinedTranscribedText.trim()) {
+                    document.getElementById('transcription-export-container').classList.remove('hidden');
+                }
+
+                // Generate AI report based on total combined text
+                if (selectTemplate !== 'none' && combinedTranscribedText.trim()) {
+                    await generateAIReport(combinedTranscribedText, selectTemplate);
+                }
+
+            } catch (error) {
+                transcribeLoading.classList.add('hidden');
+                transcriptionOutput.classList.remove('hidden');
+                transcriptionOutput.innerText = "មានបញ្ហាក្នុងការអាន និងបំប្លែងឯកសារសំឡេង៖ " + error.message;
+                if (selectTemplate !== 'none') {
+                    reportLoading.classList.add('hidden');
+                    reportCard.classList.add('hidden');
+                }
+            }
+        }
+
+        // Generate AI Report from Transcribed Text
+        async function generateAIReport(text, templateType) {
+            const reportLoading = document.getElementById('report-loading');
+            const reportOutput = document.getElementById('report-output');
+
+            let templateInstruction = "";
+            switch (templateType) {
+                case 'summary':
+                    templateInstruction = "បង្កើតរបាយការណ៍សង្ខេបខ្លីខ្លឹម បង្ហាញពីចំណុចស្នូល គំនិតសំខាន់ៗដែលបានលើកឡើង។";
+                    break;
+                case 'meeting':
+                    templateInstruction = "ចងក្រងជាកំណត់ហេតុកិច្ចប្រជុំផ្លូវការ (Meeting Minutes) ដោយបែងចែកជា គោលបំណង ខ្លឹមសារពិភាក្សា និងការសម្រេចចិត្ត។";
+                    break;
+                case 'action_items':
+                    templateInstruction = "ស្រង់ចេញនូវបញ្ជីការងារត្រូវបន្តអនុវត្ត (Action Items) ឱ្យបានច្បាស់លាស់ ដោយបញ្ជាក់ពីអ្នកទទួលខុសត្រូវ (បើមាន)។";
+                    break;
+                case 'education':
+                    templateInstruction = "រៀបចំជាខ្លឹមសារមេរៀនសង្ខេបសម្រាប់រៀនសូត្រ (Study Notes) ដោយបែងចែកជាក្បាលដីកា និងចំណុចសំខាន់ៗ។";
+                    break;
+            }
+
+            const systemPrompt = `You are an executive administrative assistant. Based on the following transcribed text, write a professional report in Khmer using clean markdown formatting. Direct instruction: ${templateInstruction}`;
+
+            const payload = {
+                contents: [
+                    {
+                        parts: [
+                            { text: `Transcribed Text:\n\n${text}\n\nGenerate the professional report now based on the instructions.` }
+                        ]
+                    }
+                ],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            try {
+                const reportResult = await callGeminiWithRetry(payload);
+                reportLoading.classList.add('hidden');
+                reportOutput.classList.remove('hidden');
+                reportOutput.innerText = reportResult || "មិនអាចបង្កើតរបាយការណ៍បានឡើយ។";
+                
+                // Show Download Button for Report
+                if (reportResult) {
+                    document.getElementById('report-export-container').classList.remove('hidden');
+                }
+            } catch (err) {
+                reportLoading.classList.add('hidden');
+                reportOutput.classList.remove('hidden');
+                reportOutput.innerText = "បរាជ័យក្នុងការបង្កើតរបាយការណ៍ AI៖ " + err.message;
+            }
+        }
+
+        // Custom Gemini API Call with Exponential Backoff (5 attempts)
+        async function callGeminiWithRetry(payload, maxRetries = 5) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        return data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    }
+                } catch (e) {
+                    // Failures allowed, will retry
+                }
+
+                // Exponential backoff delay
+                const delay = Math.pow(2, i) * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+
+            throw new Error("ការតភ្ជាប់ទៅកាន់ប្រព័ន្ធ AI ត្រូវបានដាច់ ឬលើសកំណត់។ សូមសាកល្បងម្ដងទៀត។");
+        }
+
+        // Copy Text utility
+        // Clipboard: Using standard approach within iframe constraint fallback
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            if (text.trim() === "" || text.startsWith("រាល់ពាក្យពេចន៍") || text.startsWith("របាយការណ៍វិភាគ")) {
+                showModal("គ្មានទិន្នន័យ", "គ្មានខ្លឹមសារដើម្បីចម្លងទុកឡើយ។");
                 return;
             }
 
-            let textContent = `កត់ត្រា AI KH (KOTTRA AI KH) - របាយការណ៍ប្រជុំផ្លូវការ\n`;
-            textContent += `=========================================\n\n`;
-            
-            currentSegments.forEach(seg => {
-                textContent += `[${seg.timestamp}] ${seg.speaker}: ${seg.text}\n\n`;
+            const tempInput = document.createElement("textarea");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showModal("ជោគជ័យ", "អត្ថបទត្រូវបានចម្លងទៅកាន់ក្តារតម្បៀតស្នូល (Clipboard) រួចរាល់។");
+        }
+
+        // EXPORT LOGIC (Word, PDF, SRT, TXT)
+        function exportFile(format, elementId) {
+            const text = document.getElementById(elementId).innerText;
+            if (!text || text.trim() === "" || text.startsWith("រាល់ពាក្យពេចន៍") || text.startsWith("របាយការណ៍វិភាគ")) {
+                showModal("គ្មានខ្លឹមសារ", "គ្មានទិន្នន័យដើម្បីនាំចេញឡើយ។");
+                return;
+            }
+
+            const dateStr = new Date().toISOString().slice(0,10);
+            const title = elementId === 'report-output' ? "Kottra_AI_Report" : "Kottra_AI_Transcription";
+            const filename = `${title}_${dateStr}.${format}`;
+
+            switch (format) {
+                case 'txt':
+                    downloadTxt(filename, text);
+                    break;
+                case 'srt':
+                    downloadSrt(filename, text);
+                    break;
+                case 'docx':
+                    downloadDocx(filename, text, elementId === 'report-output' ? "របាយការណ៍សង្ខេប AI" : "អត្ថបទកត់ត្រាសំឡេង");
+                    break;
+                case 'pdf':
+                    downloadPdf(elementId === 'report-output' ? "របាយការណ៍សង្ខេប AI" : "អត្ថបទកត់ត្រាសំឡេង", text);
+                    break;
+            }
+        }
+
+        function downloadTxt(filename, text) {
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
+        }
+
+        function downloadSrt(filename, text) {
+            // Segment lines by sentences or clause markers to mock timing intervals
+            const sentences = text.split(/[.!?។\n]/).filter(s => s.trim().length > 0);
+            let srtContent = "";
+            let currentTime = 0;
+
+            sentences.forEach((sentence, idx) => {
+                const duration = Math.min(Math.max(sentence.length * 0.1, 3), 7); // Calculate duration based on text length
+                const startTimeStr = formatSrtTime(currentTime);
+                currentTime += duration;
+                const endTimeStr = formatSrtTime(currentTime);
+
+                srtContent += `${idx + 1}\n${startTimeStr} --> ${endTimeStr}\n${sentence.trim()}\n\n`;
             });
 
-            // Handle browser local download
-            const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `KOTTRA_Report_${new Date().toISOString().slice(0,10)}.${format}`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-
-            showNotification("ទាញយកជោគជ័យ", `ឯកសារទម្រង់ .${format.toUpperCase()} ត្រូវបានចងក្រង និងទាញយកជោគជ័យ!`, "success");
-            document.getElementById('export-dropdown').classList.add('hidden');
+            const blob = new Blob([srtContent], { type: 'text/srt;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
         }
 
-        // Copy text helper via simulated text extraction
-        function copyTranscriptToClipboard() {
-            if (currentSegments.length === 0) return;
-            
-            let fullText = currentSegments.map(s => `${s.speaker}: ${s.text}`).join('\n');
-            
-            const el = document.createElement('textarea');
-            el.value = fullText;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            
-            showNotification("ចម្លងរួចរាល់", "ខ្លឹមសារប្រជុំទាំងអស់ត្រូវបានចម្លងទៅក្តារតម្បៀតអក្សរ (Clipboard)!", "success");
+        function formatSrtTime(totalSeconds) {
+            const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            const mins = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const secs = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
+            const ms = Math.floor((totalSeconds % 1) * 1000).toString().padStart(3, '0');
+            return `${hrs}:${mins}:${secs},${ms}`;
         }
 
-        // Helper: Simple Markdown formatting parser
-        function formatMarkdown(text) {
-            return text
-                .replace(/### (.*)/g, '<h5 class="text-sm font-bold text-white mt-4 mb-2 border-b border-white/5 pb-1">$1</h5>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-                .replace(/\* (.*)/g, '<div class="flex items-start gap-2 text-xs text-gray-300 my-1"><span class="text-indigo-400 mt-1">•</span><span>$1</span></div>')
-                .replace(/1\. (.*)/g, '<div class="flex items-start gap-2 text-xs text-gray-300 my-1"><span class="text-indigo-400 font-bold">1.</span><span>$1</span></div>')
-                .replace(/2\. (.*)/g, '<div class="flex items-start gap-2 text-xs text-gray-300 my-1"><span class="text-indigo-400 font-bold">2.</span><span>$1</span></div>')
-                .replace(/3\. (.*)/g, '<div class="flex items-start gap-2 text-xs text-gray-300 my-1"><span class="text-indigo-400 font-bold">3.</span><span>$1</span></div>');
+        // Download docx
+        function downloadDocx(filename, text, docTitle) {
+            // Create XML structure readable by Word (rich text format trick)
+            const html = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <title>${docTitle}</title>
+                    <style>
+                        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333333; padding: 20px; }
+                        h2 { color: #4f46e5; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; font-size: 18pt; }
+                        p { font-size: 11pt; white-space: pre-wrap; margin-top: 10px; }
+                    </style>
+                </head>
+                <body>
+                    <h2>${docTitle}</h2>
+                    <p>${text.replace(/\n/g, '<br>')}</p>
+                </body>
+                </html>
+            `;
+            const blob = new Blob(['\ufeff' + html], { type: 'application/msword;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            link.click();
         }
 
-        // Custom Dialog / Notification Methods (Replacing Window.alert)
-        function showNotification(title, message, type = "info") {
-            const overlay = document.getElementById('dialog-overlay');
-            const titleEl = document.getElementById('dialog-title');
-            const messageEl = document.getElementById('dialog-message');
-            const iconContainer = document.getElementById('dialog-icon-container');
+        function downloadPdf(docTitle, text) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>${docTitle}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;700&display=swap" rel="stylesheet">
+                    <style>
+                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 40px; line-height: 1.8; color: #1f2937; background-color: #ffffff; }
+                        h1 { color: #4f46e5; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; font-size: 24px; margin-bottom: 20px; }
+                        p { font-size: 14px; white-space: pre-wrap; color: #374151; }
+                        @media print {
+                            body { padding: 0; }
+                            @page { size: auto; margin: 20mm; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${docTitle}</h1>
+                    <p>${text.replace(/\n/g, '<br>')}</p>
+                    <script>
+                        setTimeout(() => {
+                            window.print();
+                            window.close();
+                        }, 500);
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
 
-            titleEl.innerText = title;
-            messageEl.innerText = message;
+        // Text-to-Speech Output Text using Browser Synthesis
+        function speakOutputText() {
+            const text = document.getElementById('transcription-output').innerText;
+            if (text.trim() === "" || text.startsWith("រាល់ពាក្យពេចន៍")) {
+                showModal("គ្មានទិន្នន័យ", "គ្មានខ្លឹមសារដើម្បីអានឡើយ។");
+                return;
+            }
 
-            // Configure colors based on status type
-            if (type === "success") {
-                iconContainer.className = "w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl mx-auto mb-4";
-                iconContainer.innerHTML = '<i class="fa-solid fa-circle-check animate-bounce"></i>';
-            } else if (type === "warning") {
-                iconContainer.className = "w-12 h-12 rounded-2xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl mx-auto mb-4";
-                iconContainer.innerHTML = '<i class="fa-solid fa-triangle-exclamation animate-pulse"></i>';
+            if ('speechSynthesis' in window) {
+                // Cancel active speaking
+                if (window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                    document.getElementById('btn-speak-text').innerHTML = '<i data-lucide="volume-2" class="w-4 h-4"></i>';
+                    lucide.createIcons();
+                    return;
+                }
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                // Try setting Language voice if available
+                utterance.lang = document.getElementById('select-lang').value === 'khmer' ? 'km-KH' : 'en-US';
+                
+                utterance.onend = () => {
+                    document.getElementById('btn-speak-text').innerHTML = '<i data-lucide="volume-2" class="w-4 h-4"></i>';
+                    lucide.createIcons();
+                };
+
+                document.getElementById('btn-speak-text').innerHTML = '<i data-lucide="volume-x" class="w-4 h-4 text-red-400"></i>';
+                lucide.createIcons();
+
+                window.speechSynthesis.speak(utterance);
             } else {
-                iconContainer.className = "w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center text-xl mx-auto mb-4";
-                iconContainer.innerHTML = '<i class="fa-solid fa-info-circle"></i>';
+                showModal("មិនគាំទ្រ", "កម្មវិធីរុករករបស់អ្នកមិនគាំទ្រការអានអត្ថបទជាសំឡេងឡើយ។");
             }
-
-            overlay.classList.remove('hidden');
-            overlay.classList.add('flex');
         }
-
-        function closeDialog() {
-            document.getElementById('dialog-overlay').classList.add('hidden');
-            document.getElementById('dialog-overlay').classList.remove('flex');
-        }
-
-        // Window resize responsive handler for Canvas visualizer
-        window.addEventListener('resize', () => {
-            if (canvas) {
-                canvas.width = canvas.parentElement.clientWidth;
-                canvas.height = canvas.parentElement.clientHeight;
-            }
-        });
-
     </script>
 </body>
 </html>
